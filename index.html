@@ -1016,6 +1016,463 @@
       </script>
     </section>
 
+    <section data-tela="checkout" class="hidden">
+  <div class="fade-in max-w-[430px] mx-auto min-h-screen bg-slate-50 pb-28">
+
+    <div class="bg-marca-800 px-5 pt-12 pb-6 rounded-b-3xl shadow-xl">
+      <h1 class="font-display text-2xl font-bold text-white">Finalizar Pedido</h1>
+      <p class="text-marca-200 text-sm mt-1">Preencha os dados para concluir</p>
+    </div>
+
+    <div class="px-4 mt-5">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="checkout-step-active flex items-center justify-center w-9 h-9 rounded-full bg-marca-500 text-white font-display font-bold text-sm transition-all duration-300" data-step="1">1</div>
+            <span class="text-sm font-semibold text-slate-700">Endereço</span>
+          </div>
+          <div class="flex-1 mx-3 h-0.5 bg-slate-200 rounded"><div class="checkout-progress-line h-full bg-marca-500 rounded transition-all duration-500" style="width:0%"></div></div>
+          <div class="flex items-center gap-2">
+            <div class="checkout-step-inactive flex items-center justify-center w-9 h-9 rounded-full bg-slate-200 text-slate-500 font-display font-bold text-sm transition-all duration-300" data-step="2">2</div>
+            <span class="text-sm font-medium text-slate-400">Pagamento</span>
+          </div>
+          <div class="flex-1 mx-3 h-0.5 bg-slate-200 rounded"><div class="checkout-progress-line h-full bg-marca-500 rounded transition-all duration-500" style="width:0%"></div></div>
+          <div class="flex items-center gap-2">
+            <div class="checkout-step-inactive flex items-center justify-center w-9 h-9 rounded-full bg-slate-200 text-slate-500 font-display font-bold text-sm transition-all duration-300" data-step="3">3</div>
+            <span class="text-sm font-medium text-slate-400">Confirmar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-4 mt-5 space-y-4">
+
+      <div id="checkout-step-1">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-5 h-5 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/><circle cx="12" cy="11" r="1.5" fill="currentColor"/></svg>
+            <h2 class="font-display font-bold text-slate-800 text-lg">Endereço de Entrega</h2>
+          </div>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">CEP</label>
+              <div class="flex gap-2">
+                <input id="chk-cep" type="text" maxlength="9" placeholder="00000-000" value="01310-100" class="checkout-cep flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all" oninput="checkout_maskCEP(this)" onblur="checkout_buscarCEP(this)">
+                <button onclick="checkout_buscarCEP(document.getElementById('chk-cep'))" class="px-4 py-3 bg-marca-500 hover:bg-marca-600 text-white rounded-xl text-sm font-semibold transition-all active:scale-95 shadow-sm shadow-marca-200">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </button>
+              </div>
+              <p id="chk-cep-status" class="text-xs text-emerald-600 mt-1.5 hidden font-medium"></p>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Rua</label>
+              <input id="chk-rua" type="text" placeholder="Rua das Palmeiras" value="Rua das Palmeiras" class="checkout-rua w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all">
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              <div class="col-span-1">
+                <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Número</label>
+                <input id="chk-numero" type="text" placeholder="123" value="123" class="checkout-numero w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Complemento</label>
+                <input id="chk-complemento" type="text" placeholder="Apto, bloco..." class="checkout-complemento w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Bairro</label>
+              <input id="chk-bairro" type="text" placeholder="Centro" value="Centro" class="checkout-bairro w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all">
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              <div class="col-span-2">
+                <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Cidade</label>
+                <input id="chk-cidade" type="text" placeholder="São Paulo" value="São Paulo" class="checkout-cidade w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all">
+              </div>
+              <div class="col-span-1">
+                <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">UF</label>
+                <select id="chk-uf" class="checkout-uf w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 focus:ring-2 focus:ring-marca-100 outline-none transition-all">
+                  <option value="SP" selected>SP</option>
+                  <option value="RJ">RJ</option>
+                  <option value="MG">MG</option>
+                  <option value="PR">PR</option>
+                  <option value="SC">SC</option>
+                  <option value="RS">RS</option>
+                  <option value="BA">BA</option>
+                  <option value="PE">PE</option>
+                  <option value="CE">CE</option>
+                  <option value="GO">GO</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button onclick="checkout_avancarPagamento()" class="btn w-full mt-5 py-3.5 bg-marca-500 hover:bg-marca-600 text-white rounded-xl font-display font-bold text-base transition-all active:scale-95 shadow-md shadow-marca-200 flex items-center justify-center gap-2">
+            Continuar para Pagamento
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="checkout-step-2" class="hidden">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-5 h-5 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            <h2 class="font-display font-bold text-slate-800 text-lg">Forma de Pagamento</h2>
+          </div>
+          <div class="space-y-3">
+            <label class="checkout-payment-option flex items-center gap-3 p-4 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:border-marca-300 bg-white" data-method="pix" onclick="checkout_selectPayment('pix')">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-slate-800 text-sm">PIX</p>
+                <p class="text-xs text-slate-500">Aprovação instantânea</p>
+              </div>
+              <div class="checkout-radio w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center transition-all"><div class="w-2.5 h-2.5 rounded-full bg-marca-500 scale-0 transition-transform"></div></div>
+            </label>
+            <label class="checkout-payment-option flex items-center gap-3 p-4 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:border-marca-300 bg-white" data-method="cartao" onclick="checkout_selectPayment('cartao')">
+              <div class="w-10 h-10 rounded-xl bg-marca-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-slate-800 text-sm">Cartão de Crédito</p>
+                <p class="text-xs text-slate-500">Até 3x sem juros</p>
+              </div>
+              <div class="checkout-radio w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center transition-all"><div class="w-2.5 h-2.5 rounded-full bg-marca-500 scale-0 transition-transform"></div></div>
+            </label>
+            <label class="checkout-payment-option flex items-center gap-3 p-4 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:border-marca-300 bg-white" data-method="boleto" onclick="checkout_selectPayment('boleto')">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              </div>
+              <div class="flex-1">
+                <p class="font-semibold text-slate-800 text-sm">Boleto</p>
+                <p class="text-xs text-slate-500">Vencimento em 3 dias úteis</p>
+              </div>
+              <div class="checkout-radio w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center transition-all"><div class="w-2.5 h-2.5 rounded-full bg-marca-500 scale-0 transition-transform"></div></div>
+            </label>
+          </div>
+          <div id="checkout-payment-detail" class="hidden mt-4"></div>
+          <div class="flex gap-3 mt-5">
+            <button onclick="checkout_voltarEndereco()" class="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-display font-bold text-sm transition-all active:scale-95">
+              <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+              Voltar
+            </button>
+            <button onclick="checkout_avancarConfirmacao()" class="flex-[2] py-3.5 bg-marca-500 hover:bg-marca-600 text-white rounded-xl font-display font-bold text-base transition-all active:scale-95 shadow-md shadow-marca-200 flex items-center justify-center gap-2">
+              Revisar Pedido
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="checkout-step-3" class="hidden">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-5 h-5 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <h2 class="font-display font-bold text-slate-800 text-lg">Confirme seu Pedido</h2>
+          </div>
+          <div id="checkout-confirm-items" class="space-y-3 mb-4"></div>
+          <div class="border-t border-slate-100 pt-4 space-y-2">
+            <div class="flex justify-between text-sm"><span class="text-slate-500">Subtotal</span><span id="chk-subtotal" class="font-semibold text-slate-700"></span></div>
+            <div id="chk-frete-row" class="flex justify-between text-sm"><span class="text-slate-500">Frete</span><span id="chk-frete" class="font-semibold"></span></div>
+            <div class="flex justify-between text-sm"><span class="text-slate-500">Pagamento</span><span id="chk-payment-label" class="font-semibold text-slate-700"></span></div>
+            <div class="flex justify-between pt-2 border-t border-slate-100"><span class="font-display font-bold text-slate-800 text-base">Total</span><span id="chk-total" class="font-display font-bold text-marca-500 text-lg"></span></div>
+          </div>
+          <div id="chk-frete-free-badge" class="hidden mt-3 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-2.5 flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-sm font-semibold text-emerald-700">Frete grátis para entregas até 75 km!</span>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-4">
+          <button onclick="checkout_voltarPagamento()" class="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-display font-bold text-sm transition-all active:scale-95">
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+            Voltar
+          </button>
+          <button onclick="checkout_confirmarPedido()" class="flex-[2] py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-display font-bold text-base transition-all active:scale-95 shadow-md shadow-emerald-200 flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Confirmar Pedido
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-2 mb-3">
+          <svg class="w-5 h-5 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <h2 class="font-display font-bold text-slate-800 text-base">Informações do Pedido</h2>
+        </div>
+        <div id="chk-cart-items-preview" class="space-y-3"></div>
+        <div class="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center">
+          <span class="font-display font-bold text-slate-800">Total do pedido</span>
+          <span id="chk-total-preview" class="font-display font-bold text-marca-500 text-lg"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="checkout-pix-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-xs w-full shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-display font-bold text-slate-800 text-lg">Pagamento PIX</h3>
+        <button onclick="document.getElementById('checkout-pix-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="flex justify-center mb-4">
+        <div class="w-48 h-48 bg-white border-2 border-slate-100 rounded-2xl flex items-center justify-center">
+          <svg viewBox="0 0 200 200" class="w-44 h-44">
+            <rect width="200" height="200" fill="white"/>
+            <g fill="#1E3A5F">
+              <rect x="10" y="10" width="40" height="40"/><rect x="60" y="10" width="20" height="40"/><rect x="100" y="10" width="40" height="40"/><rect x="160" y="10" width="30" height="40"/>
+              <rect x="10" y="60" width="40" height="20"/><rect x="60" y="60" width="80" height="20"/><rect x="160" y="60" width="30" height="20"/>
+              <rect x="10" y="90" width="40" height="40"/><rect x="60" y="90" width="20" height="40"/><rect x="100" y="90" width="40" height="40"/><rect x="160" y="90" width="30" height="40"/>
+              <rect x="10" y="150" width="40" height="40"/><rect x="60" y="150" width="80" height="40"/><rect x="160" y="150" width="30" height="40"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 text-center mb-2">Escaneie o QR Code ou use o código abaixo:</p>
+      <div class="bg-slate-50 rounded-xl p-3 mb-4">
+        <p class="text-xs text-slate-600 font-mono break-all leading-relaxed">00020126580014br.gov.bcb.pix0136bluecircuit@loja.com.br5204000053039865802BR5913BlueCircuit6009SaoPaulo62070503***63041D3D</p>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-sm text-amber-600 font-medium mb-4">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Expira em <span id="pix-timer">14:59</span></span>
+      </div>
+      <button onclick="checkout_copiarPIX(); document.getElementById('checkout-pix-modal').classList.add('hidden');" class="btn w-full py-3 bg-marca-500 hover:bg-marca-600 text-white rounded-xl font-display font-bold text-sm transition-all active:scale-95">Copiar Código PIX</button>
+    </div>
+  </div>
+
+  <div id="checkout-success-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-xs w-full shadow-2xl text-center">
+      <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h3 class="font-display font-bold text-slate-800 text-xl mb-2">Pedido Confirmado!</h3>
+      <p class="text-sm text-slate-500 mb-1">Seu pedido foi recebido com sucesso.</p>
+      <p class="text-sm font-semibold text-marca-500 mb-6" id="checkout-success-pedido"></p>
+      <button onclick="document.getElementById('checkout-success-modal').classList.add('hidden'); mostrarTela('meus-pedidos');" class="btn w-full py-3.5 bg-marca-500 hover:bg-marca-600 text-white rounded-xl font-display font-bold text-sm transition-all active:scale-95">Acompanhar Pedido</button>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+const CART_KEY = 'bluecircuit_cart';
+const checkout_simulatedAddresses = {
+  '01310100': { rua: 'Rua das Palmeiras', numero: '123', bairro: 'Centro', cidade: 'São Paulo', uf: 'SP' },
+  '20040020': { rua: 'Rua da Assembleia', numero: '45', bairro: 'Centro', cidade: 'Rio de Janeiro', uf: 'RJ' },
+  '30130000': { rua: 'Av. Afonso Pena', numero: '789', bairro: 'Centro', cidade: 'Belo Horizonte', uf: 'MG' },
+  '80010000': { rua: 'Rua XV de Novembro', numero: '321', bairro: 'Centro', cidade: 'Curitiba', uf: 'PR' },
+  '90010000': { rua: 'Rua da Praia', numero: '555', bairro: 'Centro', cidade: 'Porto Alegre', uf: 'RS' },
+  '40020000': { rua: 'Rua Chile', numero: '100', bairro: 'Centro', cidade: 'Salvador', uf: 'BA' },
+  '50010000': { rua: 'Rua do Sol', numero: '200', bairro: 'Centro', cidade: 'Recife', uf: 'PE' },
+  '60160000': { rua: 'Rua Major Facundo', numero: '300', bairro: 'Centro', cidade: 'Fortaleza', uf: 'CE' },
+};
+const checkout_cart = [
+  { id: 1, nome: 'Chinelo P&B - Adulto', variante: 'P&B | Adulto | 39', preco: 49.90, qtd: 2, cor: '#1E3A5F' },
+  { id: 2, nome: 'Chinelo Colorido - Infantil', variante: 'Colorido | Infantil | 27', preco: 39.90, qtd: 1, cor: '#2563EB' },
+  { id: 3, nome: 'Chinelo P&B - Adulto', variante: 'P&B | Adulto | 42', preco: 49.90, qtd: 1, cor: '#1E3A5F' },
+];
+let checkout_step = 1;
+let checkout_payment = '';
+let checkout_frete = 0;
+let checkout_freteGratis = true;
+let checkout_pixTimerInterval = null;
+window.checkout_maskCEP = function(el) {
+  let v = el.value.replace(/\D/g,'');
+  if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5,8);
+  el.value = v;
+};
+window.checkout_buscarCEP = function(el) {
+  const cep = el.value.replace(/\D/g,'');
+  if (cep.length < 8) return;
+  const statusEl = document.getElementById('chk-cep-status');
+  statusEl.classList.remove('hidden');
+  statusEl.textContent = 'Buscando...';
+  statusEl.className = 'text-xs text-amber-600 mt-1.5 hidden font-medium';
+  statusEl.classList.remove('hidden');
+  setTimeout(function(){
+    const data = checkout_simulatedAddresses[cep];
+    if (data) {
+      document.getElementById('chk-rua').value = data.rua;
+      document.getElementById('chk-bairro').value = data.bairro;
+      document.getElementById('chk-cidade').value = data.cidade;
+      document.getElementById('chk-uf').value = data.uf;
+      statusEl.textContent = 'Endereço encontrado!';
+      statusEl.className = 'text-xs text-emerald-600 mt-1.5 font-medium';
+      checkout_calcFrete();
+    } else {
+      document.getElementById('chk-rua').value = 'Rua das Palmeiras';
+      document.getElementById('chk-bairro').value = 'Centro';
+      document.getElementById('chk-cidade').value = 'São Paulo';
+      document.getElementById('chk-uf').value = 'SP';
+      statusEl.textContent = 'CEP não encontrado — dados preenchidos com exemplo.';
+      statusEl.className = 'text-xs text-amber-600 mt-1.5 font-medium';
+      checkout_calcFrete();
+    }
+  }, 600);
+};
+function checkout_calcFrete() {
+  const cidade = document.getElementById('chk-cidade').value;
+  const uf = document.getElementById('chk-uf').value;
+  const cidadesFreteGratis = ['São Paulo','Rio de Janeiro','Belo Horizonte','Curitiba','Porto Alegre','Salvador','Recife','Fortaleza'];
+  const ufsFreteGratis = ['SP','RJ','MG','PR','SC','RS'];
+  if (ufsFreteGratis.includes(uf) || cidadesFreteGratis.includes(cidade)) {
+    checkout_freteGratis = true;
+    checkout_frete = 0;
+  } else {
+    checkout_freteGratis = false;
+    checkout_frete = 24.90;
+  }
+}
+window.checkout_selectPayment = function(method) {
+  checkout_payment = method;
+  document.querySelectorAll('.checkout-payment-option').forEach(function(opt){
+    opt.classList.remove('border-marca-500','bg-marca-50');
+    opt.classList.add('border-slate-200');
+    opt.querySelector('.checkout-radio div').classList.remove('scale-100');
+    opt.querySelector('.checkout-radio div').classList.add('scale-0');
+  });
+  const sel = document.querySelector('.checkout-payment-option[data-method="'+method+'"]');
+  sel.classList.remove('border-slate-200');
+  sel.classList.add('border-marca-500','bg-marca-50');
+  sel.querySelector('.checkout-radio div').classList.remove('scale-0');
+  sel.querySelector('.checkout-radio div').classList.add('scale-100');
+  const detail = document.getElementById('checkout-payment-detail');
+  detail.classList.remove('hidden');
+  if (method === 'pix') {
+    detail.innerHTML = '<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center gap-3"><svg class="w-6 h-6 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><div><p class="text-sm font-semibold text-emerald-800">PIX — Aprovação instantânea</p><p class="text-xs text-emerald-600">Clique em "Gerar QR Code" ao confirmar</p></div></div>';
+  } else if (method === 'cartao') {
+    detail.innerHTML = '<div class="bg-marca-50 border border-marca-200 rounded-xl p-4 space-y-3"><div><label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Número do Cartão</label><input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="this.value=this.value.replace(/[^\\d ]/g,\'\').replace(/(\\d{4})(?=\\d)/g,\'$1 \')" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 outline-none"></div><div class="grid grid-cols-2 gap-3"><div><label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Validade</label><input type="text" placeholder="MM/AA" maxlength="5" oninput="if(this.value.length===2&&!this.value.includes(\'/\'))this.value+=\'/\'" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 outline-none"></div><div><label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">CVV</label><input type="text" placeholder="000" maxlength="3" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 outline-none"></div></div><div><label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Parcelamento</label><select class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-body text-slate-800 focus:border-marca-500 outline-none"><option value="1">1x de R$ '+(checkout_getTotal()/1).toFixed(2).replace('.',',')+' sem juros</option><option value="2">2x de R$ '+(checkout_getTotal()/2).toFixed(2).replace('.',',')+' sem juros</option><option value="3" selected>3x de R$ '+(checkout_getTotal()/3).toFixed(2).replace('.',',')+' sem juros</option></select></div></div>';
+  } else if (method === 'boleto') {
+    detail.innerHTML = '<div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3"><svg class="w-6 h-6 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><div><p class="text-sm font-semibold text-amber-800">Boleto — Vencimento em 3 dias úteis</p><p class="text-xs text-amber-600">O boleto será enviado por e-mail após confirmação</p></div></div>';
+  }
+};
+function checkout_getTotal() {
+  let sum = 0;
+  checkout_cart.forEach(function(it){ sum += it.preco * it.qtd; });
+  return sum + checkout_frete;
+}
+function checkout_updateSteps() {
+  document.getElementById('checkout-step-1').classList.toggle('hidden', checkout_step !== 1);
+  document.getElementById('checkout-step-2').classList.toggle('hidden', checkout_step !== 2);
+  document.getElementById('checkout-step-3').classList.toggle('hidden', checkout_step !== 3);
+  const steps = document.querySelectorAll('[data-step]');
+  steps.forEach(function(s, i){
+    const n = parseInt(s.getAttribute('data-step'));
+    if (n < checkout_step) {
+      s.className = 'flex items-center justify-center w-9 h-9 rounded-full bg-emerald-500 text-white font-display font-bold text-sm transition-all duration-300';
+      s.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+    } else if (n === checkout_step) {
+      s.className = 'flex items-center justify-center w-9 h-9 rounded-full bg-marca-500 text-white font-display font-bold text-sm transition-all duration-300';
+      s.textContent = n;
+    } else {
+      s.className = 'flex items-center justify-center w-9 h-9 rounded-full bg-slate-200 text-slate-500 font-display font-bold text-sm transition-all duration-300';
+      s.textContent = n;
+    }
+  });
+  const lines = document.querySelectorAll('.checkout-progress-line');
+  if (checkout_step === 1) { lines[0].style.width='0%'; lines[1].style.width='0%'; }
+  if (checkout_step === 2) { lines[0].style.width='100%'; lines[1].style.width='0%'; }
+  if (checkout_step === 3) { lines[0].style.width='100%'; lines[1].style.width='100%'; }
+}
+window.checkout_avancarPagamento = function() {
+  const rua = document.getElementById('chk-rua').value.trim();
+  const num = document.getElementById('chk-numero').value.trim();
+  const cidade = document.getElementById('chk-cidade').value.trim();
+  if (!rua || !num || !cidade) { toast('Preencha todos os campos de endereço.','erro'); return; }
+  checkout_step = 2;
+  checkout_updateSteps();
+  checkout_selectPayment('pix');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+window.checkout_voltarEndereco = function() {
+  checkout_step = 1;
+  checkout_updateSteps();
+};
+window.checkout_avancarConfirmacao = function() {
+  if (!checkout_payment) { toast('Selecione uma forma de pagamento.','erro'); return; }
+  checkout_step = 3;
+  checkout_updateSteps();
+  checkout_renderConfirmacao();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+window.checkout_voltarPagamento = function() {
+  checkout_step = 2;
+  checkout_updateSteps();
+};
+window.checkout_confirmarPedido = function() {
+  const btn = event.target.closest('button');
+  btn.disabled = true;
+  btn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Processando...';
+  setTimeout(function(){
+    const pedidoNum = 'BC-' + Date.now().toString(36).toUpperCase().slice(-6);
+    document.getElementById('checkout-success-pedido').textContent = 'Pedido #' + pedidoNum;
+    document.getElementById('checkout-success-modal').classList.remove('hidden');
+    btn.disabled = false;
+    btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Confirmar Pedido';
+    if (checkout_payment === 'pix') {
+      document.getElementById('checkout-pix-modal').classList.add('hidden');
+      if (checkout_pixTimerInterval) clearInterval(checkout_pixTimerInterval);
+    }
+  }, 1800);
+};
+window.checkout_copiarPIX = function() {
+  const code = '00020126580014br.gov.bcb.pix0136bluecircuit@loja.com.br5204000053039865802BR5913BlueCircuit6009SaoPaulo62070503***63041D3D';
+  if (navigator.clipboard) { navigator.clipboard.writeText(code).then(function(){ toast('Código PIX copiado!','ok'); }); }
+  else { toast('Código PIX copiado!','ok'); }
+};
+function checkout_renderConfirmacao() {
+  const container = document.getElementById('checkout-confirm-items');
+  let html = '';
+  checkout_cart.forEach(function(it){
+    const initials = it.nome.split(' ').slice(0,2).map(function(w){return w[0];}).join('');
+    html += '<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl"><div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-display font-bold text-xs flex-shrink-0" style="background:'+it.cor+'">'+initials+'</div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">'+it.nome+'</p><p class="text-xs text-slate-500">'+it.variante+' &middot; Qtd: '+it.qtd+'</p></div><span class="text-sm font-bold text-slate-800">'+brl(it.preco*it.qtd)+'</span></div>';
+  });
+  container.innerHTML = html;
+  const sub = checkout_cart.reduce(function(s,i){return s+i.preco*i.qtd;},0);
+  document.getElementById('chk-subtotal').textContent = brl(sub);
+  const freteEl = document.getElementById('chk-frete');
+  if (checkout_freteGratis) { freteEl.textContent = 'Grátis'; freteEl.className = 'font-semibold text-emerald-600'; } else { freteEl.textContent = brl(checkout_frete); freteEl.className = 'font-semibold text-slate-700'; }
+  document.getElementById('chk-total').textContent = brl(checkout_getTotal());
+  const labels = { pix:'PIX', cartao:'Cartão de Crédito', boleto:'Boleto' };
+  document.getElementById('chk-payment-label').textContent = labels[checkout_payment] || checkout_payment;
+  const badge = document.getElementById('chk-frete-free-badge');
+  if (checkout_freteGratis) badge.classList.remove('hidden'); else badge.classList.add('hidden');
+}
+function checkout_renderCartPreview() {
+  const container = document.getElementById('chk-cart-items-preview');
+  let html = '';
+  checkout_cart.forEach(function(it){
+    const initials = it.nome.split(' ').slice(0,2).map(function(w){return w[0];}).join('');
+    html += '<div class="flex items-center gap-3 py-2 border-b border-slate-50 last:border-0"><div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-display font-bold text-xs flex-shrink-0" style="background:'+it.cor+'">'+initials+'</div><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-800 truncate">'+it.nome+'</p><p class="text-xs text-slate-500">'+it.variante+' &times; '+it.qtd+'</p></div><span class="text-sm font-semibold text-slate-800">'+brl(it.preco*it.qtd)+'</span></div>';
+  });
+  container.innerHTML = html;
+  const total = checkout_cart.reduce(function(s,i){return s+i.preco*i.qtd;},0);
+  document.getElementById('chk-total-preview').textContent = brl(total);
+}
+function checkout_initPixTimer() {
+  let secs = 899;
+  const el = document.getElementById('pix-timer');
+  if (checkout_pixTimerInterval) clearInterval(checkout_pixTimerInterval);
+  checkout_pixTimerInterval = setInterval(function(){
+    secs--;
+    if (secs <= 0) { clearInterval(checkout_pixTimerInterval); el.textContent = 'Expirado'; return; }
+    const m = Math.floor(secs/60).toString().padStart(2,'0');
+    const s = (secs%60).toString().padStart(2,'0');
+    el.textContent = m+':'+s;
+  }, 1000);
+}
+document.getElementById('chk-cep').addEventListener('keypress', function(e){ if(e.key==='Enter') checkout_buscarCEP(this); });
+window._checkout_init = function() {
+  checkout_calcFrete();
+  checkout_renderCartPreview();
+  checkout_updateSteps();
+};
+window._checkout_init();
+if (document.getElementById('chk-cep')) {
+  document.getElementById('chk-cep').dispatchEvent(new Event('blur'));
+}
+})();
+</script>
+
     <!-- TELAS -->
 
         </div>
