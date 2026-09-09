@@ -1893,6 +1893,217 @@ if (document.getElementById('chk-cep')) {
     </script>
 </section>
 
+    <section data-tela="meus-pedidos" class="hidden">
+  <div class="px-5 pt-2 pb-6 space-y-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="font-display text-2xl font-bold text-marca-900">Meus Pedidos</h1>
+        <p class="text-sm text-gray-500 mt-0.5 mt-1">Acompanhe seus pedidos</p>
+      </div>
+      <button onclick="mostrarTela('vitrine')" class="bg-marca-600 hover:bg-marca-700 active:scale-95 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-marca-600/25 flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        Novo Pedido
+      </button>
+    </div>
+
+    <div id="mp-resumo-card" class="bg-gradient-to-br from-marca-600 to-marca-800 rounded-2xl p-5 text-white shadow-xl shadow-marca-800/20 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8"></div>
+      <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-6 -translate-x-6"></div>
+      <p class="text-sm text-marca-100 font-medium">Você já comprou</p>
+      <p class="font-display text-4xl font-bold mt-1" id="mp-total-pares">12 pares</p>
+      <p class="text-sm text-marca-200 mt-1">em 4 pedidos</p>
+      <div class="flex items-center gap-4 mt-4 pt-3 border-t border-white/15">
+        <div class="flex items-center gap-1.5 text-xs text-marca-100">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          Frete grátis até 75km
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-marca-100">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Entrega em até 10 dias
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto pb-1 -mx-5 px-5 scrollbar-hide" id="mp-filtros">
+      <button onclick="meus_pedidos_filtrar('todos')" data-filtro="todos" class="mp-filtro-btn active whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 bg-marca-600 text-white shadow-md shadow-marca-600/20">Todos</button>
+      <button onclick="meus_pedidos_filtrar('em-producao')" data-filtro="em-producao" class="mp-filtro-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200">Em produção</button>
+      <button onclick="meus_pedidos_filtrar('enviado')" data-filtro="enviado" class="mp-filtro-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200">Enviado</button>
+      <button onclick="meus_pedidos_filtrar('entregue')" data-filtro="entregue" class="mp-filtro-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200">Entregue</button>
+    </div>
+
+    <div id="mp-lista-pedidos" class="space-y-3"></div>
+    <div id="mp-vazio" class="hidden text-center py-12">
+      <svg class="w-16 h-16 text-gray-300 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      <p class="text-gray-400 mt-3 font-medium">Nenhum pedido encontrado</p>
+      <p class="text-gray-400 text-sm mt-1">Nesse filtro</p>
+    </div>
+  </div>
+
+  <div id="mp-modal-detalhe" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="meus_pedidos_fecharModal()"></div>
+    <div class="relative bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[85vh] overflow-y-auto shadow-2xl animate-[slideUp_0.3s_ease-out]">
+      <div class="sticky top-0 bg-white z-10 px-5 pt-4 pb-3 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="font-display text-lg font-bold text-marca-900" id="mp-modal-titulo">Detalhes do Pedido</h2>
+        <button onclick="meus_pedidos_fecharModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="mp-modal-corpo" class="p-5 space-y-4"></div>
+    </div>
+  </div>
+
+  <script>
+    const mp_pedidos = [
+      { id: '#PED-4821', data: '2025-03-10', cliente: 'Maria Silva', modelo: 'Havaiana Tradicional', variacao: 'Colorido • Adulto', qtd: 6, precoUnit: 29.90, status: 'entregue', dataEntrega: '2025-03-18', formaPag: 'PIX', frete: 0, endereco: 'Rua das Palmeiras, 120 - Centro', obs: '' },
+      { id: '#PED-4817', data: '2025-03-05', cliente: 'Maria Silva', modelo: 'Havaiana Esportiva', variacao: 'P&B • Adulto', qtd: 4, precoUnit: 34.90, status: 'entregue', dataEntrega: '2025-03-13', formaPag: 'Cartão de Crédito', frete: 0, endereco: 'Rua das Palmeiras, 120 - Centro', obs: '' },
+      { id: '#PED-4835', data: '2025-03-20', cliente: 'Maria Silva', modelo: 'Chinelo Infantil Colorido', variacao: 'Colorido • Infantil', qtd: 3, precoUnit: 24.90, status: 'enviado', dataEntrega: null, formaPag: 'PIX', frete: 0, endereco: 'Rua das Palmeiras, 120 - Centro', obs: 'Enviado via PAC' },
+      { id: '#PED-4840', data: '2025-03-22', cliente: 'Maria Silva', modelo: 'Havaiana Premium Couro', variacao: 'P&B • Adulto', qtd: 2, precoUnit: 49.90, status: 'em-producao', dataEntrega: null, formaPag: 'Cartão de Crédito', frete: 0, endereco: 'Rua das Palmeiras, 120 - Centro', obs: '' },
+      { id: '#PED-4798', data: '2025-02-28', cliente: 'Maria Silva', modelo: 'Chinelo Infantil Básico', variacao: 'P&B • Infantil', qtd: 5, precoUnit: 22.90, status: 'entregue', dataEntrega: '2025-03-07', formaPag: 'PIX', frete: 0, endereco: 'Rua das Palmeiras, 120 - Centro', obs: '' },
+      { id: '#PED-4848', data: '2025-03-25', cliente: 'Maria Silva', modelo: 'Havaiana Tradicional', variacao: 'Colorido • Adulto', qtd: 8, precoUnit: 29.90, status: 'em-producao', dataEntrega: null, formaPag: 'PIX', frete: 0, endereco: 'Rua das Palmeiras, 120 - Centro', obs: 'Pedido personalizado com logo' },
+    ];
+
+    const mp_statusConfig = {
+      'entregue': { label: 'Entregue', bg: 'bg-emerald-100', text: 'text-emerald-700', dot: 'bg-emerald-500' },
+      'enviado': { label: 'Enviado', bg: 'bg-sky-100', text: 'text-sky-700', dot: 'bg-sky-500' },
+      'em-producao': { label: 'Em produção', bg: 'bg-amber-100', text: 'text-amber-700', dot: 'bg-amber-500' },
+      'cancelado': { label: 'Cancelado', bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' },
+    };
+
+    const mp_coresAvatar = ['bg-red-100 text-red-700','bg-blue-100 text-blue-700','bg-emerald-100 text-emerald-700','bg-amber-100 text-amber-700','bg-purple-100 text-purple-700','bg-pink-100 text-pink-700'];
+    function mp_iniciais(nome) { const p = nome.split(' '); return (p[0][0] + (p.length > 1 ? p[p.length-1][0] : '')).toUpperCase(); }
+
+    function meus_pedidos_filtrar(filtro) {
+      document.querySelectorAll('.mp-filtro-btn').forEach(btn => {
+        btn.classList.remove('bg-marca-600','text-white','shadow-md','shadow-marca-600/20');
+        btn.classList.add('bg-gray-100','text-gray-600');
+      });
+      const ativo = document.querySelector(`[data-filtro="${filtro}"]`);
+      ativo.classList.remove('bg-gray-100','text-gray-600');
+      ativo.classList.add('bg-marca-600','text-white','shadow-md','shadow-marca-600/20');
+      const lista = document.getElementById('mp-lista-pedidos');
+      const vazio = document.getElementById('mp-vazio');
+      const filtrados = filtro === 'todos' ? mp_pedidos : mp_pedidos.filter(p => p.status === filtro);
+      lista.innerHTML = '';
+      if (filtrados.length === 0) { vazio.classList.remove('hidden'); return; }
+      vazio.classList.add('hidden');
+      filtrados.forEach((ped, i) => { const card = meus_pedidos_criarCard(ped, i); lista.appendChild(card); });
+    }
+
+    function meus_pedidos_criarCard(ped, index) {
+      const cfg = mp_statusConfig[ped.status];
+      const total = ped.qtd * ped.precoUnit;
+      const corIdx = index % mp_coresAvatar.length;
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-2xl p-4 shadow-sm border border-gray-100 active:scale-[0.98] transition-all duration-200 cursor-pointer hover:shadow-md';
+      card.style.animationDelay = (index * 60) + 'ms';
+      card.onclick = () => meus_pedidos_abrirDetalhe(ped.id);
+      card.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="w-11 h-11 rounded-full ${mp_coresAvatar[corIdx]} flex items-center justify-center flex-shrink-0 font-display font-bold text-sm">${mp_iniciais(ped.cliente)}</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="font-display font-bold text-marca-900 text-sm">${ped.id}</span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${cfg.bg} ${cfg.text}"><span class="w-1.5 h-1.5 rounded-full ${cfg.dot}"></span>${cfg.label}</span>
+            </div>
+            <p class="text-sm text-gray-700 font-medium mt-1 truncate">${ped.modelo}</p>
+            <p class="text-xs text-gray-400 mt-0.5">${ped.variacao} • ${ped.qtd} ${ped.qtd === 1 ? 'par' : 'pares'}</p>
+            <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
+              <span class="text-xs text-gray-400">${dataBR(ped.data)}</span>
+              <span class="font-display font-bold text-marca-800 text-sm">${brl(total)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-end mt-3">
+          <span class="text-xs text-marca-600 font-semibold flex items-center gap-1">Ver detalhes<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </div>`;
+      return card;
+    }
+
+    function meus_pedidos_abrirDetalhe(pedidoId) {
+      const ped = mp_pedidos.find(p => p.id === pedidoId);
+      if (!ped) return;
+      const cfg = mp_statusConfig[ped.status];
+      const total = ped.qtd * ped.precoUnit;
+      const freteLabel = ped.frete === 0 ? 'Grátis' : brl(ped.frete);
+      const historico = meus_pedidos_gerarHistorico(ped);
+      document.getElementById('mp-modal-titulo').textContent = ped.id;
+      document.getElementById('mp-modal-corpo').innerHTML = `
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-display font-bold text-marca-900">${ped.modelo}</p>
+            <p class="text-sm text-gray-500 mt-0.5">${ped.variacao}</p>
+          </div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${cfg.bg} ${cfg.text}"><span class="w-2 h-2 rounded-full ${cfg.dot}"></span>${cfg.label}</span>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 space-y-2.5">
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Quantidade</span><span class="font-semibold text-gray-800">${ped.qtd} ${ped.qtd === 1 ? 'par' : 'pares'}</span></div>
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Valor unitário</span><span class="font-semibold text-gray-800">${brl(ped.precoUnit)}</span></div>
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span class="font-semibold text-gray-800">${brl(total)}</span></div>
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Frete</span><span class="font-semibold ${ped.frete === 0 ? 'text-emerald-600' : 'text-gray-800'}">${freteLabel}</span></div>
+          <div class="border-t border-gray-200 pt-2 flex justify-between"><span class="font-semibold text-gray-700">Total</span><span class="font-display font-bold text-marca-800 text-base">${brl(total + ped.frete)}</span></div>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Forma de pagamento</p>
+          <div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H3.75A2.25 2.25 0 001.5 6v10.5a2.25 2.25 0 002.25 2.25z"/></svg><span class="text-gray-700 font-medium">${ped.formaPag}</span></div>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Endereço de entrega</p>
+          <p class="text-sm text-gray-600 flex items-start gap-2"><svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>${ped.endereco}</p>
+        </div>
+        ${ped.status === 'enviado' || ped.status === 'entregue' ? `<button onclick="meus_pedidos_fecharModal(); mostrarTela('rastreamento')" class="w-full bg-marca-600 hover:bg-marca-700 active:scale-95 text-white font-semibold py-3 rounded-xl transition-all duration-200 text-sm flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>Rastrear pedido</button>` : ''}
+        ${ped.status === 'em-producao' ? `<button onclick="meus_pedidos_fecharModal(); toast('Notificação enviada! Te avisamos quando sair para entrega.', 'ok')" class="w-full bg-marca-600 hover:bg-marca-700 active:scale-95 text-white font-semibold py-3 rounded-xl transition-all duration-200 text-sm flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>Avise-me quando enviar</button>` : ''}
+        <div class="space-y-2.5">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Histórico</p>
+          <div class="space-y-3">${historico}</div>
+        </div>`;
+      document.getElementById('mp-modal-detalhe').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function meus_pedidos_gerarHistorico(ped) {
+      const itens = [];
+      itens.push({ data: ped.data, evento: 'Pedido realizado', icone: 'check', cor: 'bg-marca-600' });
+      if (ped.status === 'em-producao' || ped.status === 'enviado' || ped.status === 'entregue') {
+        itens.push({ data: ped.data, evento: 'Pagamento confirmado', icone: 'check', cor: 'bg-emerald-500' });
+      }
+      if (ped.status === 'em-producao' || ped.status === 'enviado' || ped.status === 'entregue') {
+        const d1 = new Date(ped.data); d1.setDate(d1.getDate() + 1);
+        itens.push({ data: d1.toISOString().split('T')[0], evento: 'Em produção', icone: 'gear', cor: 'bg-amber-500' });
+      }
+      if (ped.status === 'enviado' || ped.status === 'entregue') {
+        const d2 = new Date(ped.data); d2.setDate(d2.getDate() + 5);
+        itens.push({ data: d2.toISOString().split('T')[0], evento: 'Enviado para entrega', icone: 'truck', cor: 'bg-sky-500' });
+      }
+      if (ped.status === 'entregue' && ped.dataEntrega) {
+        itens.push({ data: ped.dataEntrega, evento: 'Entregue', icone: 'home', cor: 'bg-emerald-500' });
+      }
+      return itens.map(item => `
+        <div class="flex gap-3 items-start">
+          <div class="flex flex-col items-center">
+            <div class="w-7 h-7 rounded-full ${item.cor} flex items-center justify-center flex-shrink-0">
+              ${item.icone === 'check' ? '<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>' : item.icone === 'gear' ? '<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992h4.992m12.01 0h4.986v4.986m-15-12.015l4.986-4.992"/></svg>' : item.icone === 'truck' ? '<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>' : '<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125a1.125 1.125 0 001.125 1.125H9.75v-4.875a1.125 1.125 0 011.125-1.125h2.25a1.125 1.125 0 011.125 1.125v4.875h4.125a1.125 1.125 0 001.125-1.125V9.75M8.25 21h8.25"/></svg>'}
+            </div>
+            <div class="w-px h-4 bg-gray-200"></div>
+          </div>
+          <div class="pb-1"><p class="text-sm font-medium text-gray-700">${item.evento}</p><p class="text-xs text-gray-400 mt-0.5">${dataBR(item.data)}</p></div>
+        </div>`).join('');
+    }
+
+    function meus_pedidos_fecharModal() {
+      document.getElementById('mp-modal-detalhe').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function meus_pedidos_repetir(pedidoId) {
+      meus_pedidos_fecharModal();
+      toast('Itens adicionados ao carrinho!', 'ok');
+      setTimeout(() => mostrarTela('carrinho'), 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { meus_pedidos_filtrar('todos'); });
+  </script>
+</section>
+
     <!-- TELAS -->
 
         </div>
