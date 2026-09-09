@@ -2758,6 +2758,491 @@ if (document.getElementById('chk-cep')) {
       </script>
     </section>
 
+    <section data-tela="gerenciar-produtos" class="hidden">
+      <div class="animate-fadeIn">
+        <!-- Cabeçalho -->
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h1 class="font-display text-xl font-bold text-marca-900">Produtos</h1>
+            <p class="text-sm text-gray-500 mt-0.5">Cadastre e gerencie seus modelos de chinelos</p>
+          </div>
+          <button onclick="gerenciar_produtos_abrirFormulario()" class="btn btn-primary text-sm px-4 py-2.5 rounded-xl font-medium flex items-center gap-2 active:scale-95 transition-transform">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Novo Produto
+          </button>
+        </div>
+
+        <!-- Cards de indicadores -->
+        <div class="grid grid-cols-4 gap-2.5 mb-5">
+          <div class="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-8 h-8 rounded-lg bg-marca-50 flex items-center justify-center">
+                <svg class="w-4 h-4 text-marca" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              </div>
+              <span class="text-[11px] text-gray-500 font-medium">Total</span>
+            </div>
+            <p class="font-display font-bold text-lg text-marca-900" id="stat-total">12</p>
+          </div>
+          <div class="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
+                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <span class="text-[11px] text-gray-500 font-medium">Ativos</span>
+            </div>
+            <p class="font-display font-bold text-lg text-green-700" id="stat-ativos">9</p>
+          </div>
+          <div class="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+              </div>
+              <span class="text-[11px] text-gray-500 font-medium">Inativos</span>
+            </div>
+            <p class="font-display font-bold text-lg text-gray-600" id="stat-inativos">3</p>
+          </div>
+          <div class="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <span class="text-[11px] text-gray-500 font-medium">Valor Total</span>
+            </div>
+            <p class="font-display font-bold text-base text-marca-900" id="stat-valor">R$ 8.420</p>
+          </div>
+        </div>
+
+        <!-- Gráfico -->
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm mb-5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-semibold text-marca-900">Vendas por modelo (últimos 6 meses)</h3>
+            <span class="text-xs text-gray-400">unidades vendidas</span>
+          </div>
+          <svg viewBox="0 0 300 100" class="w-full h-24">
+            <defs>
+              <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2563EB" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#2563EB" stop-opacity="0.4"/>
+              </linearGradient>
+            </defs>
+            <line x1="30" y1="85" x2="295" y2="85" stroke="#E5E7EB" stroke-width="1"/>
+            <line x1="30" y1="65" x2="295" y2="65" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="30" y1="45" x2="295" y2="45" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="30" y1="25" x2="295" y2="25" stroke="#F3F4F6" stroke-width="1"/>
+            <line x1="30" y1="5" x2="295" y2="5" stroke="#F3F4F6" stroke-width="1"/>
+            <rect x="38" y="35" width="16" height="50" rx="3" fill="url(#barGrad)"/>
+            <rect x="65" y="25" width="16" height="60" rx="3" fill="url(#barGrad)"/>
+            <rect x="92" y="45" width="16" height="40" rx="3" fill="url(#barGrad)"/>
+            <rect x="119" y="20" width="16" height="65" rx="3" fill="url(#barGrad)"/>
+            <rect x="146" y="30" width="16" height="55" rx="3" fill="url(#barGrad)"/>
+            <rect x="173" y="15" width="16" height="70" rx="3" fill="url(#barGrad)"/>
+            <rect x="200" y="40" width="16" height="45" rx="3" fill="url(#barGrad)"/>
+            <rect x="227" y="22" width="16" height="63" rx="3" fill="url(#barGrad)"/>
+            <rect x="254" y="32" width="16" height="53" rx="3" fill="url(#barGrad)"/>
+            <rect x="281" y="18" width="16" height="67" rx="3" fill="url(#barGrad)"/>
+            <text x="46" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Jan</text>
+            <text x="73" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Fev</text>
+            <text x="100" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Mar</text>
+            <text x="127" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Abr</text>
+            <text x="154" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Mai</text>
+            <text x="181" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Jun</text>
+            <text x="208" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Jul</text>
+            <text x="235" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Ago</text>
+            <text x="262" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Set</text>
+            <text x="289" y="98" text-anchor="middle" fill="#9CA3AF" font-size="7">Out</text>
+          </svg>
+        </div>
+
+        <!-- Busca e filtros -->
+        <div class="flex gap-2.5 mb-4">
+          <div class="flex-1 relative">
+            <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="gp-busca" placeholder="Buscar por nome..." oninput="gerenciar_produtos_buscar()" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all bg-white" />
+          </div>
+          <select id="gp-filtro-categoria" onchange="gerenciar_produtos_filtrar()" class="px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all text-gray-700">
+            <option value="todos">Todas</option>
+            <option value="adulto">Adulto</option>
+            <option value="infantil">Infantil</option>
+            <option value="premium">Premium</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+          <select id="gp-filtro-status" onchange="gerenciar_produtos_filtrar()" class="px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all text-gray-700">
+            <option value="todos">Status</option>
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </div>
+
+        <!-- Grid de produtos -->
+        <div id="gp-grid" class="grid grid-cols-2 gap-3">
+        </div>
+
+        <!-- Estado vazio -->
+        <div id="gp-vazio" class="hidden text-center py-12">
+          <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <p class="text-sm text-gray-500 font-medium">Nenhum produto encontrado</p>
+          <p class="text-xs text-gray-400 mt-1">Tente ajustar os filtros ou adicione um novo produto</p>
+        </div>
+      </div>
+
+      <!-- Modal de formulário -->
+      <div id="gp-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl animate-slideUp">
+          <div class="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between rounded-t-2xl">
+            <h2 id="gp-modal-titulo" class="font-display font-bold text-lg text-marca-900">Novo Produto</h2>
+            <button onclick="fecharModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <form id="gp-form" onsubmit="event.preventDefault(); gerenciar_produtos_salvar();" class="p-5 space-y-4">
+            <input type="hidden" id="gp-id" />
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nome do modelo</label>
+              <input type="text" id="gp-nome" required placeholder="Ex: Havaina Estampada" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+              <textarea id="gp-descricao" rows="2" placeholder="Descreva o modelo..." class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all resize-none"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                <select id="gp-categoria" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all bg-white">
+                  <option value="adulto">Adulto</option>
+                  <option value="infantil">Infantil</option>
+                  <option value="premium">Premium</option>
+                  <option value="personalizado">Personalizado</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select id="gp-status" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all bg-white">
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+                <select id="gp-grade" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all bg-white">
+                  <option value="colorido">Colorido</option>
+                  <option value="pb">P&B</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Tamanho</label>
+                <select id="gp-tamanho" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all bg-white">
+                  <option value="adulto">Adulto</option>
+                  <option value="infantil">Infantil</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Preço (R$)</label>
+                <input type="number" id="gp-preco" required step="0.01" min="0" placeholder="49.90" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Estoque disponível</label>
+                <input type="number" id="gp-estoque" required min="0" placeholder="100" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Prazo de produção (dias)</label>
+              <input type="number" id="gp-prazo" value="10" min="1" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-marca/30 focus:border-marca transition-all" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Foto do produto</label>
+              <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-marca/40 transition-colors cursor-pointer" onclick="gerenciar_produtos_simularUpload()">
+                <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <p class="text-xs text-gray-400">Toque para enviar uma foto</p>
+                <p class="text-[10px] text-gray-300 mt-0.5">JPG, PNG até 5MB</p>
+              </div>
+              <div id="gp-upload-preview" class="hidden mt-2">
+                <div class="flex items-center gap-2 bg-green-50 rounded-lg px-3 py-2">
+                  <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <span id="gp-upload-nome" class="text-xs text-green-700 font-medium flex-1"></span>
+                  <button type="button" onclick="gerenciar_produtos_removerUpload()" class="text-green-600 hover:text-red-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-3 pt-2">
+              <button type="button" onclick="fecharModal()" class="flex-1 btn border border-gray-200 text-gray-700 py-3 rounded-xl text-sm font-medium active:scale-95 transition-transform">Cancelar</button>
+              <button type="submit" class="flex-1 btn btn-primary py-3 rounded-xl text-sm font-medium active:scale-95 transition-transform">Salvar Produto</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal de detalhes -->
+      <div id="gp-detalhe-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl animate-slideUp">
+          <div id="gp-detalhe-conteudo" class="p-0">
+          </div>
+        </div>
+      </div>
+
+      <script>
+        var gerenciar_produtos_produtos = [
+          { id: 1, nome: 'Havaiana Tropical Mix', categoria: 'adulto', grade: 'colorido', tamanho: 'adulto', preco: 49.90, estoque: 320, prazo: 10, status: 'ativo', cor: '#FF6B6B', inicial: 'HT' },
+          { id: 2, nome: 'Classic Preto & Branco', categoria: 'adulto', grade: 'pb', tamanho: 'adulto', preco: 39.90, estoque: 500, prazo: 7, status: 'ativo', cor: '#4ECDC4', inicial: 'CP' },
+          { id: 3, nome: 'Kids Dino Adventure', categoria: 'infantil', grade: 'colorido', tamanho: 'infantil', preco: 34.90, estoque: 200, prazo: 10, status: 'ativo', cor: '#FFE66D', inicial: 'KD' },
+          { id: 4, nome: 'Premium Couro Legítimo', categoria: 'premium', grade: 'pb', tamanho: 'adulto', preco: 89.90, estoque: 80, prazo: 12, status: 'ativo', cor: '#1E3A5F', inicial: 'PC' },
+          { id: 5, nome: 'Personalizado Floral', categoria: 'personalizado', grade: 'colorido', tamanho: 'adulto', preco: 69.90, estoque: 0, prazo: 15, status: 'inativo', cor: '#FF8A80', inicial: 'PF' },
+          { id: 6, nome: 'Kids Unicórnio Rosa', categoria: 'infantil', grade: 'colorido', tamanho: 'infantil', preco: 39.90, estoque: 150, prazo: 8, status: 'ativo', cor: '#F8BBD0', inicial: 'KU' },
+          { id: 7, nome: 'Surf Classic Azul', categoria: 'adulto', grade: 'colorido', tamanho: 'adulto', preco: 44.90, estoque: 260, prazo: 10, status: 'ativo', cor: '#42A5F5', inicial: 'SA' },
+          { id: 8, nome: 'Básico Monocromático', categoria: 'adulto', grade: 'pb', tamanho: 'adulto', preco: 35.90, estoque: 400, prazo: 7, status: 'ativo', cor: '#78909C', inicial: 'BM' },
+          { id: 9, nome: 'Kids Super Herói', categoria: 'infantil', grade: 'colorido', tamanho: 'infantil', preco: 42.90, estoque: 180, prazo: 10, status: 'ativo', cor: '#EF5350', inicial: 'SH' },
+          { id: 10, nome: 'Premium Serigrafia Dourada', categoria: 'premium', grade: 'colorido', tamanho: 'adulto', preco: 99.90, estoque: 45, prazo: 15, status: 'ativo', cor: '#FFD54F', inicial: 'SD' },
+          { id: 11, nome: 'Esportivo Neon', categoria: 'adulto', grade: 'colorido', tamanho: 'adulto', preco: 54.90, estoque: 0, prazo: 10, status: 'inativo', cor: '#76FF03', inicial: 'EN' },
+          { id: 12, nome: 'Baby Soft Bebê', categoria: 'infantil', grade: 'pb', tamanho: 'infantil', preco: 29.90, estoque: 300, prazo: 7, status: 'ativo', cor: '#B0BEC5', inicial: 'BS' }
+        ];
+        var gerenciar_produtos_edicaoId = null;
+
+        function gerenciar_produtos_renderizar(lista) {
+          var grid = document.getElementById('gp-grid');
+          var vazio = document.getElementById('gp-vazio');
+          if (!lista || lista.length === 0) {
+            grid.innerHTML = '';
+            vazio.classList.remove('hidden');
+            return;
+          }
+          vazio.classList.add('hidden');
+          grid.innerHTML = lista.map(function(p) {
+            var badgeClass = p.status === 'ativo'
+              ? 'bg-green-50 text-green-700 border-green-200'
+              : 'bg-gray-50 text-gray-500 border-gray-200';
+            var badgeText = p.status === 'ativo' ? 'Ativo' : 'Inativo';
+            var categoriaLabel = p.categoria.charAt(0).toUpperCase() + p.categoria.slice(1);
+            var tamanhoLabel = p.tamanho === 'adulto' ? 'Adulto' : 'Infantil';
+            var gradeLabel = p.grade === 'pb' ? 'P&B' : 'Colorido';
+            var estoqueLow = p.estoque === 0;
+            var estoqueClass = estoqueLow ? 'text-red-500' : (p.estoque < 100 ? 'text-amber-500' : 'text-green-600');
+            var gradiente = 'linear-gradient(135deg, ' + p.cor + '22, ' + p.cor + '44)';
+            return '<div class="card bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 group" onclick="gerenciar_produtos_detalhe(' + p.id + ')">' +
+              '<div class="h-28 flex items-center justify-center relative" style="background:' + gradiente + '">' +
+                '<span class="font-display font-bold text-2xl text-white/80">' + p.inicial + '</span>' +
+                '<div class="absolute top-2 right-2">' +
+                  '<span class="badge text-[10px] px-2 py-0.5 rounded-full border ' + badgeClass + '">' + badgeText + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="p-3">' +
+                '<h3 class="font-display font-semibold text-sm text-marca-900 truncate">' + p.nome + '</h3>' +
+                '<div class="flex items-center gap-2 mt-1.5">' +
+                  '<span class="text-[10px] px-1.5 py-0.5 rounded bg-marca-50 text-marca font-medium">' + categoriaLabel + '</span>' +
+                  '<span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-50 text-gray-500">' + tamanhoLabel + '</span>' +
+                  '<span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-50 text-gray-500">' + gradeLabel + '</span>' +
+                '</div>' +
+                '<div class="flex items-center justify-between mt-2.5">' +
+                  '<span class="font-display font-bold text-base text-marca-900">R$ ' + p.preco.toFixed(2).replace('.', ',') + '</span>' +
+                  '<span class="text-[11px] ' + estoqueClass + ' font-medium">' + (p.estoque === 0 ? 'Esgotado' : p.estoque + ' un.') + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="flex border-t border-gray-50">' +
+                '<button onclick="event.stopPropagation(); gerenciar_produtos_editar(' + p.id + ')" class="flex-1 py-2.5 text-xs font-medium text-marca hover:bg-marca-50 transition-colors flex items-center justify-center gap-1">' +
+                  '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' +
+                  'Editar' +
+                '</button>' +
+                '<div class="w-px bg-gray-100"></div>' +
+                '<button onclick="event.stopPropagation(); gerenciar_produtos_toggleStatus(' + p.id + ')" class="flex-1 py-2.5 text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">' +
+                  '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>' +
+                  (p.status === 'ativo' ? 'Desativar' : 'Ativar') +
+                '</button>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }
+
+        function gerenciar_produtos_buscar() {
+          gerenciar_produtos_filtrar();
+        }
+
+        function gerenciar_produtos_filtrar() {
+          var termo = document.getElementById('gp-busca').value.toLowerCase().trim();
+          var categoria = document.getElementById('gp-filtro-categoria').value;
+          var status = document.getElementById('gp-filtro-status').value;
+          var filtrados = gerenciar_produtos_produtos.filter(function(p) {
+            var matchNome = !termo || p.nome.toLowerCase().indexOf(termo) !== -1;
+            var matchCat = categoria === 'todos' || p.categoria === categoria;
+            var matchStatus = status === 'todos' || p.status === status;
+            return matchNome && matchCat && matchStatus;
+          });
+          gerenciar_produtos_renderizar(filtrados);
+        }
+
+        function gerenciar_produtos_abrirFormulario() {
+          gerenciar_produtos_edicaoId = null;
+          document.getElementById('gp-modal-titulo').textContent = 'Novo Produto';
+          document.getElementById('gp-form').reset();
+          document.getElementById('gp-id').value = '';
+          document.getElementById('gp-prazo').value = '10';
+          document.getElementById('gp-upload-preview').classList.add('hidden');
+          abrirModal(document.getElementById('gp-modal').outerHTML.replace('hidden', '').replace('id="gp-modal"', 'id="gp-modal-copy"'), 'Novo Produto');
+          setTimeout(function() {
+            var m = document.getElementById('gp-modal-copy');
+            if (m) m.remove();
+          }, 100);
+          document.getElementById('gp-modal').classList.remove('hidden');
+        }
+
+        function gerenciar_produtos_editar(id) {
+          var p = gerenciar_produtos_produtos.find(function(x) { return x.id === id; });
+          if (!p) return;
+          gerenciar_produtos_edicaoId = id;
+          document.getElementById('gp-modal-titulo').textContent = 'Editar Produto';
+          document.getElementById('gp-id').value = p.id;
+          document.getElementById('gp-nome').value = p.nome;
+          document.getElementById('gp-descricao').value = '';
+          document.getElementById('gp-categoria').value = p.categoria;
+          document.getElementById('gp-status').value = p.status;
+          document.getElementById('gp-grade').value = p.grade;
+          document.getElementById('gp-tamanho').value = p.tamanho;
+          document.getElementById('gp-preco').value = p.preco;
+          document.getElementById('gp-estoque').value = p.estoque;
+          document.getElementById('gp-prazo').value = p.prazo;
+          document.getElementById('gp-upload-preview').classList.add('hidden');
+          document.getElementById('gp-modal').classList.remove('hidden');
+        }
+
+        function gerenciar_produtos_salvar() {
+          var nome = document.getElementById('gp-nome').value.trim();
+          var preco = parseFloat(document.getElementById('gp-preco').value);
+          var estoque = parseInt(document.getElementById('gp-estoque').value);
+          if (!nome || isNaN(preco) || isNaN(estoque)) {
+            toast('Preencha todos os campos obrigatórios.', 'erro');
+            return;
+          }
+          var categoria = document.getElementById('gp-categoria').value;
+          var status = document.getElementById('gp-status').value;
+          var grade = document.getElementById('gp-grade').value;
+          var tamanho = document.getElementById('gp-tamanho').value;
+          var prazo = parseInt(document.getElementById('gp-prazo').value) || 10;
+          var cores = ['#FF6B6B','#4ECDC4','#FFE66D','#1E3A5F','#FF8A80','#F8BBD0','#42A5F5','#78909C','#EF5350','#FFD54F','#76FF03','#B0BEC5'];
+          if (gerenciar_produtos_edicaoId) {
+            var p = gerenciar_produtos_produtos.find(function(x) { return x.id === gerenciar_produtos_edicaoId; });
+            if (p) {
+              p.nome = nome; p.categoria = categoria; p.status = status;
+              p.grade = grade; p.tamanho = tamanho; p.preco = preco;
+              p.estoque = estoque; p.prazo = prazo;
+            }
+            toast('Produto atualizado com sucesso!', 'ok');
+          } else {
+            var inicial = nome.split(' ').map(function(w) { return w[0]; }).join('').substring(0,2).toUpperCase();
+            gerenciar_produtos_produtos.push({
+              id: Date.now(), nome: nome, categoria: categoria, grade: grade,
+              tamanho: tamanho, preco: preco, estoque: estoque, prazo: prazo,
+              status: status, cor: cores[Math.floor(Math.random()*cores.length)], inicial: inicial
+            });
+            toast('Produto cadastrado com sucesso!', 'ok');
+          }
+          document.getElementById('gp-modal').classList.add('hidden');
+          gerenciar_produtos_filtrar();
+          gerenciar_produtos_atualizarStats();
+        }
+
+        function gerenciar_produtos_toggleStatus(id) {
+          var p = gerenciar_produtos_produtos.find(function(x) { return x.id === id; });
+          if (!p) return;
+          p.status = p.status === 'ativo' ? 'inativo' : 'ativo';
+          toast(p.nome + ' agora está ' + (p.status === 'ativo' ? 'ativo' : 'inativo') + '.', 'ok');
+          gerenciar_produtos_filtrar();
+          gerenciar_produtos_atualizarStats();
+        }
+
+        function gerenciar_produtos_detalhe(id) {
+          var p = gerenciar_produtos_produtos.find(function(x) { return x.id === id; });
+          if (!p) return;
+          var categoriaLabel = p.categoria.charAt(0).toUpperCase() + p.categoria.slice(1);
+          var tamanhoLabel = p.tamanho === 'adulto' ? 'Adulto' : 'Infantil';
+          var gradeLabel = p.grade === 'pb' ? 'P&B' : 'Colorido';
+          var badgeClass = p.status === 'ativo' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-500 border-gray-200';
+          var badgeText = p.status === 'ativo' ? 'Ativo' : 'Inativo';
+          var gradiente = 'linear-gradient(135deg, ' + p.cor + '22, ' + p.cor + '44)';
+          var estoqueText = p.estoque === 0 ? '<span class="text-red-500">Esgotado</span>' : (p.estoque < 100 ? '<span class="text-amber-500">Baixo: ' + p.estoque + ' un.</span>' : '<span class="text-green-600 font-medium">' + p.estoque + ' unidades</span>');
+          var html = '<div class="animate-slideUp">' +
+            '<div class="h-40 flex items-center justify-center relative" style="background:' + gradiente + '">' +
+              '<span class="font-display font-bold text-4xl text-white/80">' + p.inicial + '</span>' +
+              '<div class="absolute top-4 left-4">' +
+                '<button onclick="fecharModal(); setTimeout(function(){ gerenciar_produtos_editar(' + p.id + '); }, 300);" class="w-8 h-8 rounded-full bg-black/20 flex items-center justify-center hover:bg-black/40 transition-colors">' +
+                  '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>' +
+                '</button>' +
+              '</div>' +
+              '<div class="absolute top-4 right-4">' +
+                '<span class="badge text-xs px-2.5 py-1 rounded-full border ' + badgeClass + '">' + badgeText + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="p-5">' +
+              '<h2 class="font-display font-bold text-xl text-marca-900">' + p.nome + '</h2>' +
+              '<p class="text-sm text-gray-500 mt-1">' + categoriaLabel + ' / ' + tamanhoLabel + '</p>' +
+              '<div class="grid grid-cols-2 gap-3 mt-5">' +
+                '<div class="bg-marca-50 rounded-xl p-3 text-center">' +
+                  '<p class="text-[10px] text-marca/70 font-medium uppercase tracking-wider">Preço</p>' +
+                  '<p class="font-display font-bold text-lg text-marca mt-0.5">R$ ' + p.preco.toFixed(2).replace('.', ',') + '</p>' +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-xl p-3 text-center">' +
+                  '<p class="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Grade</p>' +
+                  '<p class="font-display font-bold text-lg text-gray-700 mt-0.5">' + gradeLabel + '</p>' +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-xl p-3 text-center">' +
+                  '<p class="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Estoque</p>' +
+                  '<p class="font-display font-bold text-lg mt-0.5">' + estoqueText + '</p>' +
+                '</div>' +
+                '<div class="bg-gray-50 rounded-xl p-3 text-center">' +
+                  '<p class="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Prazo</p>' +
+                  '<p class="font-display font-bold text-lg text-gray-700 mt-0.5">' + p.prazo + ' dias</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="mt-5 pt-4 border-t border-gray-100">' +
+                '<h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Ações rápidas</h4>' +
+                '<div class="grid grid-cols-2 gap-2.5">' +
+                  '<button onclick="fecharModal(); setTimeout(function(){ gerenciar_produtos_editar(' + p.id + '); }, 300);" class="btn border border-marca text-marca py-2.5 rounded-xl text-sm font-medium active:scale-95 transition-transform flex items-center justify-center gap-2">' +
+                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' +
+                    'Editar' +
+                  '</button>' +
+                  '<button onclick="fecharModal(); setTimeout(function(){ gerenciar_produtos_toggleStatus(' + p.id + '); }, 300);" class="btn border border-gray-200 text-gray-700 py-2.5 rounded-xl text-sm font-medium active:scale-95 transition-transform flex items-center justify-center gap-2">' +
+                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>' +
+                    (p.status === 'ativo' ? 'Desativar' : 'Ativar') +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+          abrirModal(html, p.nome);
+        }
+
+        function gerenciar_produtos_atualizarStats() {
+          var total = gerenciar_produtos_produtos.length;
+          var ativos = gerenciar_produtos_produtos.filter(function(p) { return p.status === 'ativo'; }).length;
+          var inativos = total - ativos;
+          var valor = gerenciar_produtos_produtos.reduce(function(s, p) { return s + (p.preco * p.estoque); }, 0);
+          document.getElementById('stat-total').textContent = total;
+          document.getElementById('stat-ativos').textContent = ativos;
+          document.getElementById('stat-inativos').textContent = inativos;
+          document.getElementById('stat-valor').textContent = 'R$ ' + Math.round(valor).toLocaleString('pt-BR');
+        }
+
+        function gerenciar_produtos_simularUpload() {
+          document.getElementById('gp-upload-preview').classList.remove('hidden');
+          document.getElementById('gp-upload-nome').textContent = 'foto_produto_' + Date.now() % 1000 + '.jpg';
+          toast('Foto adicionada (simulação).', 'info');
+        }
+
+        function gerenciar_produtos_removerUpload() {
+          document.getElementById('gp-upload-preview').classList.add('hidden');
+          document.getElementById('gp-upload-nome').textContent = '';
+          toast('Foto removida.', 'info');
+        }
+
+        gerenciar_produtos_renderizar(gerenciar_produtos_produtos);
+        gerenciar_produtos_atualizarStats();
+      </script>
+    </section>
+
     <!-- TELAS -->
 
         </div>
