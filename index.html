@@ -159,7 +159,235 @@
         <!-- App Content -->
         <div id="app-content" class="h-full overflow-hidden relative bg-marca-50" style="height: calc(100% - 40px);">
 
-            <!-- TELAS -->
+            <section data-tela="vitrine" class="hidden">
+        <div class="vitrine-enter">
+            <div class="px-5 pt-2 pb-3">
+                <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#2563EB,#1E3A5F)">
+                            <span class="text-white font-display font-bold text-sm">MC</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-body">Bem-vindo(a) de volta,</p>
+                            <p class="font-display font-bold text-marca-900 text-lg leading-tight">Maria da Silva</p>
+                        </div>
+                    </div>
+                    <button onclick="mostrarTela('meu-perfil')" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors active:scale-95" aria-label="Notificações">
+                        <svg class="w-5 h-5 text-marca-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    </button>
+                </div>
+                <h1 class="font-display font-extrabold text-marca-900 text-2xl mt-3 mb-0.5">Olá, qual modelo hoje?</h1>
+                <p class="text-gray-500 font-body text-sm mb-4">Monte seu pedido com frete grátis até 75 km</p>
+            </div>
+            <div class="px-5 mb-3">
+                <div class="relative">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" id="vitrine_busca" placeholder="Buscar modelo..." oninput="vitrine_filtrar()" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-gray-200 font-body text-sm text-marca-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-marca-500 focus:border-transparent transition-all shadow-sm">
+                </div>
+            </div>
+            <div class="px-5 mb-4">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 font-body">Grade</p>
+                <div class="flex gap-2" id="vitrine_filtro_grade">
+                    <button onclick="vitrine_setGrade('todos')" data-grade="todos" class="vitrine-btn-grade flex-1 py-2.5 px-3 rounded-xl font-body text-sm font-semibold transition-all active:scale-95 border-2" style="border-color:#2563EB;background:#2563EB;color:#fff">Todos</button>
+                    <button onclick="vitrine_setGrade('p&b')" data-grade="p&b" class="vitrine-btn-grade flex-1 py-2.5 px-3 rounded-xl font-body text-sm font-semibold transition-all active:scale-95 border-2 bg-white text-marca-700 border-gray-200">P&B</button>
+                    <button onclick="vitrine_setGrade('colorido')" data-grade="colorido" class="vitrine-btn-grade flex-1 py-2.5 px-3 rounded-xl font-body text-sm font-semibold transition-all active:scale-95 border-2 bg-white text-marca-700 border-gray-200">Colorido</button>
+                </div>
+            </div>
+            <div class="px-5 mb-4">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 font-body">Tamanho</p>
+                <div class="flex gap-2" id="vitrine_filtro_tamanho">
+                    <button onclick="vitrine_setTamanho('todos')" data-tamanho="todos" class="vitrine-btn-tamanho flex-1 py-2.5 px-3 rounded-xl font-body text-sm font-semibold transition-all active:scale-95 border-2" style="border-color:#2563EB;background:#2563EB;color:#fff">Todos</button>
+                    <button onclick="vitrine_setTamanho('adulto')" data-tamanho="adulto" class="vitrine-btn-tamanho flex-1 py-2.5 px-3 rounded-xl font-body text-sm font-semibold transition-all active:scale-95 border-2 bg-white text-marca-700 border-gray-200">Adulto</button>
+                    <button onclick="vitrine_setTamanho('infantil')" data-tamanho="infantil" class="vitrine-btn-tamanho flex-1 py-2.5 px-3 rounded-xl font-body text-sm font-semibold transition-all active:scale-95 border-2 bg-white text-marca-700 border-gray-200">Infantil</button>
+                </div>
+            </div>
+            <div class="px-5 mb-2">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold text-marca-800 font-body" id="vitrine_count">8 modelos encontrados</p>
+                    <button onclick="vitrine_limparFiltros()" class="text-xs font-semibold text-marca-600 font-body hover:text-marca-800 transition-colors">Limpar filtros</button>
+                </div>
+            </div>
+            <div class="px-5 pb-24">
+                <div id="vitrine_grid" class="grid grid-cols-2 gap-3">
+                </div>
+                <div id="vitrine_vazio" class="hidden text-center py-10">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <p class="font-display font-bold text-marca-800 text-lg mb-1">Nenhum modelo encontrado</p>
+                    <p class="text-sm text-gray-500 font-body">Tente ajustar os filtros ou a busca</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+    const vitrine_produtos = [
+        {id:1,nome:'Havaianas Top',marca:'Havaianas',preco:34.90,grade:'colorido',tamanho:'adulto',cores:['Azul','Vermelho','Verde','Preto','Rosa'],frete:true,desconto:10,img_grad:'linear-gradient(135deg,#2563EB,#3B82F6)',selo:'Mais vendido'},
+        {id:2,nome:'Rider Street',marca:'Rider',preco:42.90,grade:'colorido',tamanho:'adulto',cores:['Preto','Cinza','Azul Marinho','Branco'],frete:true,desconto:0,img_grad:'linear-gradient(135deg,#1E3A5F,#2563EB)',selo:'Novo'},
+        {id:3,nome:'Ipanema Class',marca:'Ipanema',preco:29.90,grade:'p&b',tamanho:'adulto',cores:['Preto','Branco','Cinza'],frete:true,desconto:15,img_grad:'linear-gradient(135deg,#475569,#94A3B8)',selo:'Oferta'},
+        {id:4,nome:'Havaianas Kids',marca:'Havaianas',preco:24.90,grade:'colorido',tamanho:'infantil',cores:['Azul','Vermelho','Amarelo','Verde','Rosa','Laranja'],frete:true,desconto:0,img_grad:'linear-gradient(135deg,#F59E0B,#EF4444)',selo:''},
+        {id:5,nome:'Rider Infantil',marca:'Rider',preco:22.90,grade:'colorido',tamanho:'infantil',cores:['Azul','Verde','Preto','Branco','Rosa'],frete:true,desconto:20,img_grad:'linear-gradient(135deg,#10B981,#2563EB)',selo:'Promoção'},
+        {id:6,nome:'Ipanema Trend',marca:'Ipanema',preco:37.90,grade:'colorido',tamanho:'adulto',cores:['Rosa','Lilás','Verde Água','Bege','Preto'],frete:false,desconto:0,img_grad:'linear-gradient(135deg,#EC4899,#8B5CF6)',selo:''},
+        {id:7,nome:'Havaianas P&B Classic',marca:'Havaianas',preco:31.90,grade:'p&b',tamanho:'adulto',cores:['Preto','Branco','Cinza Chumbo','Marinho'],frete:true,desconto:5,img_grad:'linear-gradient(135deg,#1E293B,#64748B)',selo:''},
+        {id:8,nome:'Rider Sport',marca:'Rider',preco:39.90,grade:'p&b',tamanho:'adulto',cores:['Preto','Cinza','Marinho'],frete:false,desconto:0,img_grad:'linear-gradient(135deg,#0F172A,#334155)',selo:'Esportivo'}
+    ];
+    let vitrine_grade = 'todos';
+    let vitrine_tamanho = 'todos';
+
+    function vitrine_renderGrade(id) {
+        const p = vitrine_produtos.find(x => x.id === id);
+        if (!p) return '';
+        const precoFinal = p.desconto > 0 ? (p.preco * (1 - p.desconto / 100)).toFixed(2) : p.preco.toFixed(2);
+        const inicial = p.nome.charAt(0);
+        const seloHtml = p.selo ? `<span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold font-body mb-1.5" style="background:#2563EB;color:#fff">${p.selo}</span>` : '';
+        const freteHtml = p.frete ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-body bg-green-100 text-green-700"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Frete grátis</span>` : '';
+        const descontoHtml = p.desconto > 0 ? `<span class="text-xs text-red-500 font-semibold line-through font-body">${brl(p.preco)}</span>` : '';
+        return `<div class="card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer active:scale-[0.97]" onclick="vitrine_abrirDetalhe(${p.id})">
+            <div class="relative h-36 flex items-center justify-center" style="background:${p.img_grad}">
+                <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                    <svg class="w-10 h-10 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16c0-3.5 2.5-7 6-7h4c3.5 0 6 3.5 6 7" stroke-linecap="round"/><path d="M7 16v3a1 1 0 001 1h8a1 1 0 001-1v-3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="8" r="1.5" fill="currentColor"/></svg>
+                </div>
+                ${freteHtml ? `<div class="absolute top-2 right-2">${freteHtml}</div>` : ''}
+            </div>
+            <div class="p-3">
+                ${seloHtml}
+                <p class="font-display font-bold text-marca-900 text-sm leading-tight mb-0.5">${p.nome}</p>
+                <p class="text-[11px] text-gray-500 font-body mb-2">${p.marca} · ${p.tamanho === 'adulto' ? 'Adulto' : 'Infantil'}</p>
+                <div class="flex items-baseline gap-2 flex-wrap">
+                    ${descontoHtml}
+                    <span class="font-display font-extrabold text-marca-700 text-base">${brl(parseFloat(precoFinal))}</span>
+                    ${p.desconto > 0 ? `<span class="text-[10px] font-bold font-body bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full">-${p.desconto}%</span>` : ''}
+                </div>
+                <div class="flex gap-1 mt-2 flex-wrap">
+                    ${p.cores.slice(0, 4).map(c => `<span class="w-4 h-4 rounded-full border border-gray-200" style="background:${vitrine_corHex(c)}" title="${c}"></span>`).join('')}
+                    ${p.cores.length > 4 ? `<span class="text-[10px] text-gray-400 font-body">+${p.cores.length - 4}</span>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function vitrine_corHex(nome) {
+        const cores = {'Azul':'#3B82F6','Vermelho':'#EF4444','Verde':'#22C55E','Preto':'#1E293B','Branco':'#F1F5F9','Rosa':'#EC4899','Azul Marinho':'#1E3A5F','Cinza':'#94A3B8','Amarelo':'#FBBF24','Laranja':'#F97316','Lilás':'#A78BFA','Verde Água':'#67E8F9','Bege':'#D4A574','Cinza Chumbo':'#475569','Marinho':'#172554','Rosa Claro':'#F9A8D4','Roxo':'#7C3AED'};
+        return cores[nome] || '#CBD5E1';
+    }
+
+    function vitrine_filtrar() {
+        vitrine_render();
+    }
+
+    function vitrine_setGrade(g) {
+        vitrine_grade = g;
+        document.querySelectorAll('.vitrine-btn-grade').forEach(b => {
+            const active = b.dataset.grade === g;
+            b.style.background = active ? '#2563EB' : '#fff';
+            b.style.color = active ? '#fff' : '#1E3A5F';
+            b.style.borderColor = active ? '#2563EB' : '#E5E7EB';
+        });
+        vitrine_render();
+    }
+
+    function vitrine_setTamanho(t) {
+        vitrine_tamanho = t;
+        document.querySelectorAll('.vitrine-btn-tamanho').forEach(b => {
+            const active = b.dataset.tamanho === t;
+            b.style.background = active ? '#2563EB' : '#fff';
+            b.style.color = active ? '#fff' : '#1E3A5F';
+            b.style.borderColor = active ? '#2563EB' : '#E5E7EB';
+        });
+        vitrine_render();
+    }
+
+    function vitrine_limparFiltros() {
+        vitrine_grade = 'todos';
+        vitrine_tamanho = 'todos';
+        document.getElementById('vitrine_busca').value = '';
+        vitrine_setGrade('todos');
+        vitrine_setTamanho('todos');
+        vitrine_render();
+        toast('Filtros limpos', 'info');
+    }
+
+    function vitrine_render() {
+        const busca = (document.getElementById('vitrine_busca').value || '').toLowerCase().trim();
+        let filtrados = vitrine_produtos.filter(p => {
+            const matchGrade = vitrine_grade === 'todos' || p.grade === vitrine_grade;
+            const matchTamanho = vitrine_tamanho === 'todos' || p.tamanho === vitrine_tamanho;
+            const matchBusca = !busca || p.nome.toLowerCase().includes(busca) || p.marca.toLowerCase().includes(busca) || p.cores.some(c => c.toLowerCase().includes(busca));
+            return matchGrade && matchTamanho && matchBusca;
+        });
+        const grid = document.getElementById('vitrine_grid');
+        const vazio = document.getElementById('vitrine_vazio');
+        const countEl = document.getElementById('vitrine_count');
+        countEl.textContent = filtrados.length + ' modelo' + (filtrados.length !== 1 ? 's' : '') + ' encontrado' + (filtrados.length !== 1 ? 's' : '');
+        if (filtrados.length === 0) {
+            grid.classList.add('hidden');
+            vazio.classList.remove('hidden');
+        } else {
+            grid.classList.remove('hidden');
+            vazio.classList.add('hidden');
+            grid.innerHTML = filtrados.map(p => vitrine_renderGrade(p.id)).join('');
+        }
+    }
+
+    function vitrine_abrirDetalhe(id) {
+        const p = vitrine_produtos.find(x => x.id === id);
+        if (!p) return;
+        const precoFinal = p.desconto > 0 ? (p.preco * (1 - p.desconto / 100)).toFixed(2) : p.preco.toFixed(2);
+        const tamanhoLabel = p.tamanho === 'adulto' ? 'Adulto' : 'Infantil';
+        const gradeLabel = p.grade === 'p&b' ? 'Preto & Branco' : 'Colorido';
+        const freteLabel = p.frete ? '<span class="text-green-600 font-semibold text-sm font-body">Grátis até 75 km</span>' : '<span class="text-gray-500 font-semibold text-sm font-body">Consulte valores</span>';
+        const descontoHtml = p.desconto > 0 ? `<span class="text-sm text-red-500 font-semibold line-through font-body">${brl(p.preco)}</span>` : '';
+        const seloHtml = p.selo ? `<span class="inline-block px-3 py-1 rounded-full text-xs font-bold font-body" style="background:#2563EB;color:#fff">${p.selo}</span>` : '';
+        const html = `<div class="space-y-4 font-body">
+            <div class="h-44 rounded-2xl flex items-center justify-center" style="background:${p.img_grad}">
+                <div class="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                    <svg class="w-14 h-14 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16c0-3.5 2.5-7 6-7h4c3.5 0 6 3.5 6 7" stroke-linecap="round"/><path d="M7 16v3a1 1 0 001 1h8a1 1 0 001-1v-3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="8" r="1.5" fill="currentColor"/></svg>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-start justify-between gap-2">
+                    <div>
+                        <p class="text-xs text-gray-500 font-body">${p.marca}</p>
+                        <h3 class="font-display font-extrabold text-marca-900 text-xl">${p.nome}</h3>
+                    </div>
+                    ${seloHtml}
+                </div>
+                <div class="flex items-baseline gap-3 mt-2">
+                    ${descontoHtml}
+                    <span class="font-display font-extrabold text-2xl" style="color:#2563EB">${brl(parseFloat(precoFinal))}</span>
+                    ${p.desconto > 0 ? `<span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-full font-body">${p.desconto}% OFF</span>` : ''}
+                </div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-3 space-y-2">
+                <div class="flex justify-between"><span class="text-gray-500 text-sm font-body">Grade</span><span class="font-semibold text-sm text-marca-800 font-body">${gradeLabel}</span></div>
+                <div class="flex justify-between"><span class="text-gray-500 text-sm font-body">Tamanho</span><span class="font-semibold text-sm text-marca-800 font-body">${tamanhoLabel}</span></div>
+                <div class="flex justify-between"><span class="text-gray-500 text-sm font-body">Frete</span>${freteLabel}</div>
+                <div class="flex justify-between"><span class="text-gray-500 text-sm font-body">Prazo de entrega</span><span class="font-semibold text-sm text-marca-800 font-body">Até 10 dias úteis</span></div>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 font-body">Cores disponíveis</p>
+                <div class="flex gap-2 flex-wrap">${p.cores.map(c => `<div class="flex items-center gap-1.5 bg-gray-50 rounded-lg px-2.5 py-1.5"><span class="w-4 h-4 rounded-full border border-gray-200 inline-block" style="background:${vitrine_corHex(c)}"></span><span class="text-xs text-marca-700 font-body">${c}</span></div>`).join('')}</div>
+            </div>
+            <div class="flex gap-3 pt-1">
+                <button onclick="vitrine_addCarrinho(${p.id})" class="flex-1 font-body font-semibold text-white py-3.5 rounded-xl transition-all active:scale-95 hover:opacity-90 text-sm" style="background:#2563EB">Adicionar ao Carrinho</button>
+                <button onclick="fecharModal()" class="px-4 py-3.5 rounded-xl border-2 border-gray-200 font-body font-semibold text-marca-700 hover:bg-gray-50 transition-colors active:scale-95 text-sm">Fechar</button>
+            </div>
+        </div>`;
+        abrirModal(html, 'Detalhes do Produto');
+    }
+
+    function vitrine_addCarrinho(id) {
+        const p = vitrine_produtos.find(x => x.id === id);
+        if (!p) return;
+        fecharModal();
+        if (typeof adicionarAoCarrinho === 'function') { adicionarAoCarrinho(id); } else {
+            const precoFinal = p.desconto > 0 ? (p.preco * (1 - p.desconto / 100)).toFixed(2) : p.preco.toFixed(2);
+            toast(`${p.nome} adicionado ao carrinho!`, 'ok');
+        }
+    }
+
+    vitrine_render();
+    </script>
+
+    <!-- TELAS -->
 
         </div>
 
