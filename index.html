@@ -827,6 +827,195 @@
       </script>
     </section>
 
+    <section data-tela="carrinho" class="hidden">
+      <div class="px-5 pt-2 pb-28">
+        <div class="mb-5">
+          <h1 class="font-display text-2xl font-bold text-marca-900">Meu Carrinho</h1>
+          <p class="text-sm text-gray-500 mt-1" id="carrinho-subtitulo">3 itens no carrinho</p>
+        </div>
+
+        <div id="carrinho-vazio" class="hidden flex flex-col items-center justify-center py-16 text-center">
+          <div class="w-28 h-28 rounded-full bg-marca-50 flex items-center justify-center mb-5">
+            <svg class="w-14 h-14 text-marca-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+          </div>
+          <h2 class="font-display text-lg font-semibold text-marca-900 mb-1">Seu carrinho está vazio</h2>
+          <p class="text-sm text-gray-500 mb-6">Explore o catálogo e encontre os chinelos perfeitos!</p>
+          <button onclick="mostrarTela('vitrine')" class="bg-marca-600 text-white font-semibold text-sm px-8 py-3 rounded-xl active:scale-95 transition-transform">Ver Catálogo</button>
+        </div>
+
+        <div id="carrinho-itens" class="space-y-3"></div>
+      </div>
+
+      <div id="carrinho-rodape" class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white/90 backdrop-blur-lg border-t border-gray-100 px-5 pt-3 pb-6 z-30">
+        <div class="space-y-2 mb-3">
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span class="font-medium text-marca-900" id="carrinho-subtotal">R$ 0,00</span></div>
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Frete</span><button onclick="carrinho_abrirFrete()" class="text-marca-600 font-medium underline underline-offset-2" id="carrinho-frete-label">Calcular</button></div>
+          <div class="border-t border-gray-100 pt-2 flex justify-between"><span class="font-display font-bold text-marca-900">Total</span><span class="font-display font-bold text-lg text-marca-900" id="carrinho-total">R$ 0,00</span></div>
+        </div>
+        <button onclick="carrinho_finalizarPedido()" id="btn-finalizar" class="w-full bg-[#DC2626] hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-xl transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Finalizar Pedido
+        </button>
+      </div>
+
+      <div id="modal-frete" class="hidden fixed inset-0 z-50 flex items-end justify-center">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="carrinho_fecharFrete()"></div>
+        <div class="relative w-full max-w-[430px] bg-white rounded-t-2xl p-5 pb-8 animate-[slideUp_0.3s_ease]">
+          <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5"></div>
+          <h3 class="font-display text-lg font-bold text-marca-900 mb-1">Calcular Frete</h3>
+          <p class="text-xs text-gray-500 mb-4">Frete grátis para entregas até 75 km da fábrica.</p>
+          <label class="block mb-2 text-sm font-medium text-marca-900">CEP de entrega</label>
+          <input type="text" id="input-cep" placeholder="Ex: 01234-567" maxlength="9" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-marca-500 transition-colors" oninput="carrinho_mascaraCEP(this)">
+          <button onclick="carrinho_calcularFrete()" class="w-full bg-marca-600 text-white font-semibold text-sm py-3 rounded-xl mt-4 active:scale-95 transition-transform">Calcular</button>
+          <button onclick="carrinho_fecharFrete()" class="w-full text-gray-500 text-sm py-3 mt-1">Cancelar</button>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          var carrinho = window._carrinho || (window._carrinho = []);
+          var freteCalculado = window._freteCalculado || null;
+
+          function carrinho_render() {
+            var container = document.getElementById('carrinho-itens');
+            var vazio = document.getElementById('carrinho-vazio');
+            var rodape = document.getElementById('carrinho-rodape');
+            var subtitulo = document.getElementById('carrinho-subtitulo');
+
+            if (carrinho.length === 0) {
+              vazio.classList.remove('hidden');
+              rodape.classList.add('hidden');
+              container.innerHTML = '';
+              return;
+            }
+            vazio.classList.add('hidden');
+            rodape.classList.remove('hidden');
+            subtitulo.textContent = carrinho.length + (carrinho.length === 1 ? ' item no carrinho' : ' itens no carrinho');
+
+            var html = '';
+            carrinho.forEach(function(item, idx) {
+              var sub = item.quantidade * item.precoUnitario;
+              var imgGrad = item.grade === 'P&B'
+                ? 'linear-gradient(135deg, #374151 0%, #6B7280 50%, #9CA3AF 100%)'
+                : 'linear-gradient(135deg, #E11D48 0%, #F59E0B 50%, #10B981 100%)';
+              var gradeCor = item.grade === 'P&B' ? 'bg-gray-600' : 'bg-pink-600';
+              var tamCor = item.tamanho === 'Adulto' ? 'bg-marca-600' : 'bg-amber-500';
+              html += '<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 flex gap-3 transition-all hover:shadow-md">';
+              html += '<div class="w-20 h-20 rounded-xl flex-shrink-0 flex items-center justify-center text-white" style="background:' + imgGrad + '">';
+              html += '<svg class="w-9 h-9 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>';
+              html += '</div>';
+              html += '<div class="flex-1 min-w-0">';
+              html += '<h3 class="font-display font-semibold text-sm text-marca-900 truncate">' + item.nomeProduto + '</h3>';
+              html += '<div class="flex gap-1.5 mt-1.5">';
+              html += '<span class="' + gradeCor + ' text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">' + item.grade + '</span>';
+              html += '<span class="' + tamCor + ' text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">' + item.tamanho + '</span>';
+              html += '</div>';
+              html += '<div class="flex items-center justify-between mt-2">';
+              html += '<div class="flex items-center border border-gray-200 rounded-lg">';
+              html += '<button onclick="carrinho_alterarQuantidade(' + idx + ', -1)" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-marca-600 transition-colors text-lg font-light">−</button>';
+              html += '<span class="w-8 text-center text-sm font-semibold text-marca-900">' + item.quantidade + '</span>';
+              html += '<button onclick="carrinho_alterarQuantidade(' + idx + ', 1)" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-marca-600 transition-colors text-lg font-light">+</button>';
+              html += '</div>';
+              html += '<div class="text-right">';
+              html += '<span class="text-xs text-gray-400 line-through block">R$ ' + item.precoUnitario.toFixed(2).replace('.', ',') + '</span>';
+              html += '<span class="font-bold text-sm text-marca-900">R$ ' + sub.toFixed(2).replace('.', ',') + '</span>';
+              html += '</div>';
+              html += '</div>';
+              html += '</div>';
+              html += '<button onclick="carrinho_removerItem(' + idx + ')" class="self-start p-1 text-gray-300 hover:text-red-500 transition-colors mt-0.5" title="Remover"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>';
+              html += '</div>';
+            });
+            container.innerHTML = html;
+            carrinho_atualizarResumo();
+          }
+
+          function carrinho_atualizarResumo() {
+            var subtotal = 0;
+            carrinho.forEach(function(item) { subtotal += item.quantidade * item.precoUnitario; });
+            var freteValor = 0;
+            var freteLabel = '';
+            if (freteCalculado === null) {
+              freteLabel = '<button onclick="carrinho_abrirFrete()" class="text-marca-600 font-medium underline underline-offset-2">Calcular</button>';
+            } else if (freteCalculado === 0) {
+              freteLabel = '<span class="text-emerald-600 font-medium">Grátis</span>';
+            } else {
+              freteLabel = '<span class="text-gray-900">R$ ' + freteCalculado.toFixed(2).replace('.', ',') + '</span>';
+              freteValor = freteCalculado;
+            }
+            document.getElementById('carrinho-subtotal').textContent = 'R$ ' + subtotal.toFixed(2).replace('.', ',');
+            document.getElementById('carrinho-frete-label').outerHTML = '<span id="carrinho-frete-label" class="cursor-pointer">' + freteLabel + '</span>';
+            if (freteLabel.indexOf('button') >= 0) {
+              document.getElementById('carrinho-frete-label').onclick = carrinho_abrirFrete;
+            }
+            document.getElementById('carrinho-total').textContent = 'R$ ' + (subtotal + freteValor).toFixed(2).replace('.', ',');
+          }
+
+          window.carrinho_alterarQuantidade = function(idx, delta) {
+            if (idx < 0 || idx >= carrinho.length) return;
+            carrinho[idx].quantidade += delta;
+            if (carrinho[idx].quantidade <= 0) {
+              carrinho.splice(idx, 1);
+              toast('Item removido do carrinho', 'info');
+            }
+            carrinho_render();
+          };
+
+          window.carrinho_removerItem = function(idx) {
+            if (idx < 0 || idx >= carrinho.length) return;
+            var nome = carrinho[idx].nomeProduto;
+            carrinho.splice(idx, 1);
+            carrinho_render();
+            toast(nome + ' removido', 'info');
+          };
+
+          window.carrinho_abrirFrete = function() {
+            document.getElementById('modal-frete').classList.remove('hidden');
+            setTimeout(function() { document.getElementById('input-cep').focus(); }, 100);
+          };
+
+          window.carrinho_fecharFrete = function() {
+            document.getElementById('modal-frete').classList.add('hidden');
+            document.getElementById('input-cep').value = '';
+          };
+
+          window.carrinho_mascaraCEP = function(el) {
+            var v = el.value.replace(/\D/g, '').substring(0, 8);
+            if (v.length > 5) el.value = v.substring(0, 5) + '-' + v.substring(5);
+            else el.value = v;
+          };
+
+          window.carrinho_calcularFrete = function() {
+            var cep = document.getElementById('input-cep').value.replace(/\D/g, '');
+            if (cep.length < 8) { toast('CEP inválido, digite 8 números', 'erro'); return; }
+            var distancia = Math.floor(Math.random() * 120) + 1;
+            if (distancia <= 75) {
+              freteCalculado = 0;
+              toast('Frete grátis! Distância: ' + distancia + ' km da fábrica', 'ok');
+            } else {
+              freteCalculado = parseFloat((distancia * 0.55).toFixed(2));
+              toast('Frete calculado: R$ ' + freteCalculado.toFixed(2).replace('.', ',') + ' (' + distancia + ' km)', 'ok');
+            }
+            carrinho_fecharFrete();
+            carrinho_render();
+          };
+
+          window.carrinho_finalizarPedido = function() {
+            if (carrinho.length === 0) { toast('Adicione itens ao carrinho primeiro', 'erro'); return; }
+            if (freteCalculado === null) { toast('Calcule o frete antes de continuar', 'erro'); return; }
+            mostrarTela('checkout');
+          };
+
+          if (carrinho.length === 0) {
+            carrinho.push({ id: 1, nomeProduto: 'Chinelo Passeio Colorido', grade: 'Colorido', tamanho: 'Adulto', quantidade: 2, precoUnitario: 39.90 });
+            carrinho.push({ id: 2, nomeProduto: 'Chinelo Comfort P&B', grade: 'P&B', tamanho: 'Infantil', quantidade: 1, precoUnitario: 29.90 });
+            carrinho.push({ id: 3, nomeProduto: 'Chinelo Praia Colorido', grade: 'Colorido', tamanho: 'Infantil', quantidade: 1, precoUnitario: 34.90 });
+          }
+
+          carrinho_render();
+        })();
+      </script>
+    </section>
+
     <!-- TELAS -->
 
         </div>
