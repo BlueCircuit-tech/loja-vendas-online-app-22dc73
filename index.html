@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SoftStep — Chinelos Personalizados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        marca: {
+                            50: '#EFF6FF', 100: '#DBEAFE', 200: '#BFDBFE',
+                            300: '#93C5FD', 400: '#60A5FA', 500: '#3B82F6',
+                            600: '#2563EB', 700: '#1D4ED8', 800: '#1E40AF',
+                            900: '#1E3A5F', 950: '#172554'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['"Plus Jakarta Sans"', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 2px 12px rgba(30,58,95,0.06)',
+                        'card-hover': '0 6px 24px rgba(30,58,95,0.12)',
+                        'nav': '0 -4px 20px rgba(30,58,95,0.08)',
+                        'toast': '0 4px 16px rgba(0,0,0,0.15)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f172a;
+            overscroll-behavior: none;
+        }
+        ::-webkit-scrollbar { width: 0; height: 0; }
+        * { scrollbar-width: none; }
+        :focus-visible { outline: 2px solid #2563EB; outline-offset: 2px; border-radius: 4px; }
+
+        @keyframes entradaTela {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        [data-tela]:not(.hidden) { animation: entradaTela 0.28s ease-out both; }
+
+        .badge {
+            display: inline-flex; align-items: center;
+            padding: 2px 10px; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.02em;
+        }
+        .card {
+            background: #fff; border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(30,58,95,0.06);
+            padding: 16px; transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .card:active { transform: scale(0.985); }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 14px 24px; border-radius: 14px; font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem;
+            border: none; cursor: pointer; transition: all 0.2s; width: 100%;
+            -webkit-user-select: none; user-select: none;
+        }
+        .btn:active { transform: scale(0.97); opacity: 0.92; }
+        .btn-primario { background: #2563EB; color: #fff; }
+        .btn-primario:hover { background: #1D4ED8; }
+        .btn-secundario { background: #F1F5F9; color: #1E3A5F; }
+        .btn-secundario:hover { background: #E2E8F0; }
+        .btn-outline {
+            background: transparent; color: #2563EB;
+            border: 2px solid #2563EB;
+        }
+
+        .ativo-nav {
+            color: #2563EB !important;
+        }
+        .ativo-nav::after {
+            content: ''; position: absolute; top: -8px;
+            left: 50%; transform: translateX(-50%);
+            width: 28px; height: 3px; border-radius: 3px;
+            background: #2563EB;
+        }
+        .nav-btn { position: relative; }
+
+        #toasts {
+            position: fixed; top: 48px; left: 50%; transform: translateX(-50%);
+            z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+            width: calc(100% - 32px); max-width: 358px; pointer-events: none;
+        }
+        .toast-item {
+            padding: 14px 18px; border-radius: 14px;
+            color: #fff; font-weight: 600; font-size: 0.85rem;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            animation: toastIn 0.35s ease-out, toastOut 0.3s 2.7s ease-in forwards;
+            pointer-events: auto;
+        }
+        @keyframes toastIn { from { opacity:0; transform: translateY(-16px) scale(0.95);} to { opacity:1; transform: translateY(0) scale(1);} }
+        @keyframes toastOut { to { opacity:0; transform: translateY(-16px) scale(0.95);} }
+        .toast-ok { background: #059669; }
+        .toast-erro { background: #DC2626; }
+        .toast-info { background: #2563EB; }
+
+        #modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
+            z-index: 8000; align-items: flex-end; justify-content: center;
+        }
+        #modal-overlay.aberto { display: flex; }
+        #modal-cartao {
+            background: #fff; border-radius: 24px 24px 0 0;
+            width: 100%; max-width: 390px; max-height: 80vh;
+            overflow-y: auto; padding: 8px 0;
+            animation: modalUp 0.3s ease-out;
+        }
+        @keyframes modalUp { from { transform: translateY(100%);} to { transform: translateY(0);} }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0;} 100% { background-position: -200% 0;} }
+
+        .swiper-container { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .swiper-container::-webkit-scrollbar { display: none; }
+        .swiper-slide { scroll-snap-align: start; flex-shrink: 0; }
+    </style>
+</head>
+<body class="bg-slate-900 flex items-center justify-center min-h-screen p-0 md:p-4">
+
+    <!-- App Frame -->
+    <div id="app-frame" class="relative w-full max-w-[390px] h-[100dvh] md:h-[844px] bg-marca-50 md:rounded-[40px] overflow-hidden shadow-2xl">
+
+        <!-- Status Bar -->
+        <div class="flex items-center justify-between px-7 pt-3 pb-1 bg-marca-50 select-none" style="padding-top: max(12px, env(safe-area-inset-top));">
+            <span id="hora" class="text-sm font-bold text-marca-900 font-display"></span>
+            <div class="flex items-center gap-1.5 text-marca-900">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3C7.46 3 3.34 4.78.29 7.67l1.42 1.42C5.11 7.6 8.45 6.09 12 6.09s6.89 1.51 10.29 4l1.42-1.42C19.66 4.78 15.54 3 12 3zm6.28 9.28l-1.42 1.42C16.38 15.04 14.28 16 12 16s-4.38-.96-6.86-3.3L3.3 12.28C5.89 9.72 8.78 8.09 12 8.09s6.11 1.63 8.7 4.19zM12 21c-2.33 0-4.31-1.46-5.78-3.5l1.42-1.42c1.26 1.52 3.01 2.42 5.36 2.42 2.32 0 4.09-.9 5.36-2.42l1.42 1.42C19.31 19.54 17.33 21 15 21h-3z"/></svg>
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0z"/></svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+        </div>
+
+        <!-- App Content -->
+        <div id="app-content" class="h-full overflow-hidden relative bg-marca-50" style="height: calc(100% - 40px);">
+
+            <!-- TELAS -->
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav id="nav-bar" class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-100 z-50 shadow-nav" style="padding-bottom: env(safe-area-inset-bottom);">
+            <div class="flex items-center justify-around py-1.5 px-1">
+                <button data-nav="vitrine" onclick="mostrarTela('vitrine')" class="nav-btn flex flex-col items-center gap-0.5 py-1.5 px-2 text-slate-400 transition-colors duration-200 min-w-[52px]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+                    <span class="text-[10px] font-semibold">Vitrine</span>
+                </button>
+                <button data-nav="detalhe-do-produto" onclick="mostrarTela('detalhe-do-produto')" class="nav-btn flex flex-col items-center gap-0.5 py-1.5 px-2 text-slate-400 transition-colors duration-200 min-w-[52px]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span class="text-[10px] font-semibold">Produto</span>
+                </button>
+                <button data-nav="carrinho" onclick="mostrarTela('carrinho')" class="nav-btn flex flex-col items-center gap-0.5 py-1.5 px-2 text-slate-400 transition-colors duration-200 min-w-[52px] relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3m15 0a3 3 0 01-3 3m-3-3a3 3 0 00-3-3m3 3v1.5m-9-1.5V21m6.364-9.364l.707.707m-11.314 0L6.364 21m12.728 0l-1.414-1.414M6.364 21l1.414-1.414"/></svg>
+                    <span id="nav-cart-badge" class="hidden absolute -top-0.5 right-1 w-5 h-5 bg-marca-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                    <span class="text-[10px] font-semibold">Carrinho</span>
+                </button>
+                <button data-nav="checkout" onclick="mostrarTela('checkout')" class="nav-btn flex flex-col items-center gap-0.5 py-1.5 px-2 text-slate-400 transition-colors duration-200 min-w-[52px]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3 2.25h3m-9.75-6.75h16.5a2.25 2.25 0 012.25 2.25v6.75a2.25 2.25 0 01-2.25 2.25H3.75a2.25 2.25 0 01-2.25-2.25v-6.75a2.25 2.25 0 012.25-2.25z"/></svg>
+                    <span class="text-[10px] font-semibold">Checkout</span>
+                </button>
+                <button data-nav="meu-perfil" onclick="mostrarTela('meu-perfil')" class="nav-btn flex flex-col items-center gap-0.5 py-1.5 px-2 text-slate-400 transition-colors duration-200 min-w-[52px]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.25h15a1.125 1.125 0 001.125-1.125V19.5a5.25 5.25 0 00-10.5 0v.375c0 .621.504 1.125 1.125 1.125H4.5z"/></svg>
+                    <span class="text-[10px] font-semibold">Perfil</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toasts"></div>
+
+    <!-- Modal -->
+    <div id="modal-overlay" onclick="if(event.target===this)fecharModal()">
+        <div id="modal-cartao"></div>
+    </div>
+
+    <script>
+        // ===== UTILITÁRIOS =====
+        function brl(v) { return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
+        function dataBR(iso) {
+            if (!iso) return '—';
+            var d = new Date(iso + 'T03:00:00');
+            return d.toLocaleDateString('pt-BR');
+        }
+        function toast(mensagem, tipo) {
+            var el = document.createElement('div');
+            el.className = 'toast-item toast-' + (tipo || 'info');
+            var icones = { ok: '✓', erro: '✕', info: 'ℹ' };
+            el.innerHTML = '<span class="text-lg leading-none">' + (icones[tipo] || icones.info) + '</span><span>' + mensagem + '</span>';
+            document.getElementById('toasts').appendChild(el);
+            setTimeout(function() { el.remove(); }, 3100);
+        }
+        function abrirModal(html, titulo) {
+            document.getElementById('modal-cartao').innerHTML =
+                '<div class="flex items-center justify-between px-5 pt-4 pb-2">' +
+                '<h3 class="font-display font-bold text-lg text-marca-900">' + (titulo || '') + '</h3>' +
+                '<button onclick="fecharModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">' +
+                '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></div>' +
+                '<div class="px-5 pb-6">' + html + '</div>';
+            document.getElementById('modal-overlay').classList.add('aberto');
+        }
+        function fecharModal() {
+            document.getElementById('modal-overlay').classList.remove('aberto');
+        }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') fecharModal(); });
+
+        // ===== ROTEADOR =====
+        var estado = {
+            carrinho: [],
+            pedidos: [],
+            usuario: { nome: '', email: '', telefone: '', logradouro: '', numero: '', bairro: '', cidade: '', cep: '' },
+            admin: { modo: false }
+        };
+
+        function atualizarBadgeCarrinho() {
+            var b = document.getElementById('nav-cart-badge');
+            if (!b) return;
+            var n = estado.carrinho.reduce(function(s, i) { return s + i.qtd; }, 0);
+            b.textContent = n;
+            b.classList.toggle('hidden', n === 0);
+            b.classList.toggle('flex', n > 0);
+        }
+
+        function mostrarTela(id) {
+            document.querySelectorAll('[data-tela]').forEach(function(s) {
+                s.classList.toggle('hidden', s.dataset.tela !== id);
+            });
+            document.querySelectorAll('[data-nav]').forEach(function(b) {
+                b.classList.toggle('ativo-nav', b.dataset.nav === id);
+            });
+            atualizarBadgeCarrinho();
+            window.scrollTo({ top: 0 });
+            var nav = document.getElementById('nav-bar');
+            var exibirNav = ['vitrine','detalhe-do-produto','carrinho','checkout','confirmacao','rastreamento','meus-pedidos','meu-perfil','painel-admin','gerenciar-produtos'].indexOf(id) >= 0;
+            nav.style.display = exibirNav ? '' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            mostrarTela('vitrine');
+            document.getElementById('hora').textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            setInterval(function() {
+                document.getElementById('hora').textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
